@@ -1,0 +1,86 @@
+---
+import astroLogo from '../assets/astro.svg';
+import background from '../assets/background.svg';
+---
+
+<section id="welcome">
+	<div class="welcome-container">
+		<div class="welcome-text">
+			<h2>Welcome to Peace Houston</h2>
+			<p>Your welcome message here...</p>
+			<button class="live-chat-button">Start Live Chat</button>
+		</div>
+		<div class="welcome-video">  
+			<iframe 
+				src="https://www.youtube.com/embed/tjQwe3K3aW0?si=Do25mGisVDos0atW&autoplay=1&mute=1"
+				frameborder="0" 
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+				referrerpolicy="strict-origin-when-cross-origin"
+				allowfullscreen>
+			</iframe>
+		</div>
+		<div class="right-video-pad">
+
+		</div>
+	</div>
+</section>
+
+<style>
+	.welcome-container {
+		display: flex;
+		gap: 2rem;
+		padding: 2rem;
+		align-items: center;
+	}
+
+	.welcome-text {
+		flex: 0 0 27%;
+		text-align: center;
+	}
+
+	.right-video-pad {
+		flex: 0 0 3%;
+	}
+
+	.welcome-video {
+		flex: 0 0 70%;
+	}
+
+	.welcome-video iframe {
+		width: 100%;
+		height: 30rem;
+	}
+
+	h2, p {
+		color: white;
+		margin: 0;
+	}
+
+	h2 {
+		margin-bottom: 1rem;
+	}
+	.live-chat-button {
+		margin-top: 20px;
+		padding: 10px 20px;
+		background-color: #20c18e;
+		color: white;
+		border: none;
+		border-radius: 25px;
+		cursor: pointer;
+	}
+
+	@media (max-width: 768px) {
+		.welcome-container {
+			flex-direction: column;
+		}
+
+		.welcome-text,
+		.welcome-video {
+			flex: 0 0 100%;
+		}
+
+		.welcome-video iframe {
+			height: 16rem;
+		}
+	}
+</style>

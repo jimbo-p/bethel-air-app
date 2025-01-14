@@ -1,0 +1,113 @@
+---
+const resources = [
+    {
+        image: 'public/podcast.jpg',
+        title: 'Podcast',
+        description: 'Join local support groups in the Houston area.'
+    },
+    {
+        image: 'public/books.jpg',
+        title: 'Meditation Resources',
+        description: 'Access guided meditations and mindfulness exercises.'
+    },
+    {
+        image: 'public/local_resources.jpg',
+        title: 'Professional Help',
+        description: 'Connect with licensed therapists and counselors.'
+    },
+];
+---
+
+<section id="resources">
+    <div class="section-divider-resources" style="margin-top: 0;">Explore these curated resources designed to support and guide you.</div>
+    <div class="resources-grid">
+        {resources.map((resource) => (
+            <div class="resource-item">
+                <img src={resource.image} alt={resource.title}>
+                <div class="resource-details">
+                    <h3>{resource.title}</h3>
+                    <p>{resource.description}</p>
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .section-divider-resources {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+        background-color: #07A7AC;
+        font-size: 24px;
+        font-weight: bold;
+        color: #eff6f6;
+        padding: 10px;
+        margin: 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .resource-item {
+        height: 250px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+
+    .resource-item:hover {
+        transform: scale(1.05);
+    }
+
+    .resource-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .resource-details {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        height: 90%;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        border-radius: 10px;
+        overflow-y: auto;
+    }
+
+    .resource-item.active .resource-details {
+        display: block;
+    }
+</style>
+
+<script>
+    // Resource click functionality
+    const resourceItems = document.querySelectorAll('.resource-item');
+    resourceItems.forEach(item => {
+        item.addEventListener('click', () => {
+            resourceItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+</script>

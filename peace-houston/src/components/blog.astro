@@ -1,0 +1,89 @@
+---
+const blogPosts = [
+    {
+        title: "What is anxiety?",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+    },
+    {
+        title: "How can I manage anxiety?",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+    },
+    {
+        title: "Understanding panic attacks",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+    }
+    // Add more blog posts as needed
+];
+---
+
+<section id="blog">
+    <div class="section-divider">We've written a few things with you in mind—click below to explore!</div>
+    <div class="blog-grid">
+        {blogPosts.map((post) => (
+            <div class="blog-item">
+                <h3>{post.title}</h3>
+                <p>{post.content}</p>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    #blog {
+        padding: 0;
+        background-color: #0b8d91;
+    }
+
+    .section-divider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+        background-color: #07A7AC;
+        font-size: 24px;
+        font-weight: bold;
+        color: #eff6f6;
+        padding: 10px;
+        margin: 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .blog-item {
+        color: #eff6f6;
+        padding: 20px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    .blog-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .blog-item h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+    }
+
+    .blog-item p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .blog-grid {
+            grid-template-columns: 1fr;
+            padding: 10px;
+        }
+    }
+</style>
