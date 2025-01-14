@@ -19,8 +19,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use the version compatible with Astro
-          cache: "npm"      # Cache npm dependencies for faster builds
+          node-version: 18 
+          cache: "npm"      
+          cache-dependency-path: ./peace-houston/package-lock.json
 
       - name: Install dependencies
         working-directory: ./peace-houston
