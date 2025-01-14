@@ -16,6 +16,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Use the version compatible with Astro
+          cache: "npm"      # Cache npm dependencies for faster builds
+
+      - name: Install dependencies
+        working-directory: ./peace-houston
+        run: npm install
+
+      - name: Build Static Site
+        working-directory: ./peace-houston
+        run: npm run build
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
