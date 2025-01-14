@@ -3,16 +3,16 @@ name: "Update S3 Bucket content and Invalidate CloudFront Cache"
 on:
   push:
     branches:
-      - develop 
+      - develop
+      - main
   workflow_dispatch:  
 
 jobs:
   deploy-static-site:
-    name: Deploy bethel air
+    name: Deploy Static Site
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -21,14 +21,28 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  
+          aws-region: us-east-1
+
+      - name: Determine Environment
+        id: set-env
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "s3_bucket=bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=PROD_CLOUDFRONT_DISTRIBUTION_ID" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
+            echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
+          else
+            echo "Unsupported branch: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
 
       - name: Upload Files to S3
         run: |
-          aws s3 sync ./ s3://dev-bethel-air/
+          aws s3 sync ./ s3://${{ env.s3_bucket }}/
 
       - name: Invalidate CloudFront Cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id E2KQMUAECAYUPT \
+            --distribution-id ${{ env.cloudfront_distribution_id }} \
             --paths "/*"
