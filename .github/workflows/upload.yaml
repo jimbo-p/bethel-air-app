@@ -42,7 +42,7 @@ jobs:
           aws s3 sync ./ s3://${{ env.s3_bucket }}/ \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --eclude ".LICENSE"
+            --exclude ".LICENSE"
 
       - name: Invalidate CloudFront Cache
         run: |
