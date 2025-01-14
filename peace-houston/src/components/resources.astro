@@ -1,17 +1,22 @@
 ---
+import { Image } from 'astro:assets';
+import podcastImage from '../assets/podcast.jpg';
+import booksImage from '../assets/books.jpg';
+import localResourcesImage from '../assets/local_resources.jpg';
+
 const resources = [
     {
-        image: 'public/podcast.jpg',
+        image: podcastImage,
         title: 'Podcast',
         description: 'Join local support groups in the Houston area.'
     },
     {
-        image: 'public/books.jpg',
+        image: booksImage,
         title: 'Meditation Resources',
         description: 'Access guided meditations and mindfulness exercises.'
     },
     {
-        image: 'public/local_resources.jpg',
+        image: localResourcesImage,
         title: 'Professional Help',
         description: 'Connect with licensed therapists and counselors.'
     },
@@ -23,7 +28,13 @@ const resources = [
     <div class="resources-grid">
         {resources.map((resource) => (
             <div class="resource-item">
-                <img src={resource.image} alt={resource.title}>
+                <Image 
+                    src={resource.image} 
+                    alt={resource.title}
+                    width={400}
+                    height={300}
+                    quality={80}
+                />
                 <div class="resource-details">
                     <h3>{resource.title}</h3>
                     <p>{resource.description}</p>
