@@ -1,0 +1,120 @@
+---
+const socialLinks = [
+    { platform: "Facebook", url: "#" },
+    { platform: "Twitter", url: "#" },
+    { platform: "Instagram", url: "#" }
+];
+---
+
+<section id="about">
+    <div class="section-divider">About Us</div>
+    <div class="about-content">
+        <h2>PeaceHouston.com</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+        
+        <div class="social-media">
+            {socialLinks.map((social) => (
+                <a 
+                    href={social.url} 
+                    title={social.platform}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img src={`public/social/${social.platform.toLowerCase()}.svg`} alt={social.platform} />
+                </a>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    #about {
+        background-image: url('public/about-background.jpg');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .section-divider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+        background-color: #07A7AC;
+        font-size: 24px;
+        font-weight: bold;
+        color: #eff6f6;
+        padding: 10px;
+        margin: 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-content {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 40px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .about-content h2 {
+        margin-top: 0;
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .about-content p {
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .social-media {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .social-media a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        background-color: #07A7AC;
+        border-radius: 50%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .social-media a:hover {
+        transform: translateY(-5px);
+        background-color: #0b8d91;
+    }
+
+    .social-media img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);  /* Makes the SVG icons white */
+    }
+
+    @media (max-width: 768px) {
+        .about-content {
+            padding: 20px;
+        }
+
+        .social-media {
+            gap: 15px;
+        }
+
+        .social-media a {
+            width: 40px;
+            height: 40px;
+        }
+
+        .social-media img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+</style>

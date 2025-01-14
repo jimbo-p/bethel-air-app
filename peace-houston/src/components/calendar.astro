@@ -1,0 +1,53 @@
+---
+---
+
+<section id="calendar">
+    <div class="section-divider">Calendar</div>
+    <div class="calendar-container">
+      <div class="actual-calendar">
+        <!-- Calendar implementation will go here -->
+      </div>
+    </div>
+</section>
+  
+<style>
+    #calendar {
+      display: flex;
+      flex-direction: column;
+      min-height: 55vh;
+      gap: 15px;
+    }
+  
+    .section-divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      background-color: #07A7AC;
+      font-size: 24px;
+      font-weight: bold;
+      color: #eff6f6;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 0;
+      line-height: 1;
+    }
+
+    .calendar-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-image: url('public/calendar_example.jpg');
+      background-size: contain;
+      background-position: top center;
+      background-repeat: no-repeat;
+      padding: 20px;
+      max-height: 80vh;
+      margin: 0 auto;
+      width: 90%;
+      max-width: 1200px;
+    }
+  
+    
+</style>
