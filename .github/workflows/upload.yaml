@@ -39,7 +39,7 @@ jobs:
 
       - name: Upload Files to S3
         run: |
-          aws s3 sync ./ s3://${{ env.s3_bucket }}/ \
+          aws s3 sync ./peace-houston/dist/ s3://${{ env.s3_bucket }}/ \
             --exclude ".git/*" \
             --exclude ".github/*" \
             --exclude ".LICENSE"
