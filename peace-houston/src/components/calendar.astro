@@ -6,17 +6,21 @@
       Please schedule a face-to-face meet up with someone from our team
     </div>
     <div class="calendar-container">
-      <div class="actual-calendar">
-        <!-- Calendar implementation will go here -->
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget" 
+      data-url="https://calendly.com/bethel-peace-houston/in-person-meetup?background_color=FFFFFF&primary_color=0b8d91&hide_gdpr_banner=1"
+      data-hide_gdpr_banner="1">
       </div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
 </section>
   
 <style>
     #calendar {
+      min-height: 55vh;
       display: flex;
       flex-direction: column;
-      min-height: 55vh;
       gap: 15px;
       padding: 20px 0;
     }
@@ -24,15 +28,16 @@
     .calendar-container {
       flex: 1;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      background-image: url('../assets/calendar_example.jpg');
-      background-size: contain;
-      background-position: top center;
+      width: 100%;
+      background-image: url('../assets/calendar_background.jpg');  /* Add your image path here */
+      background-size: cover;
+      background-position: center;
       background-repeat: no-repeat;
-      padding: 20px;
-      max-height: 80vh;
-      margin: 0 auto;
-      width: 90%;
+    }
+
+    .calendly-inline-widget {
+      flex: 1;
+      min-height: 700px;
+      width: 100%;
     }
 </style>
