@@ -7,7 +7,7 @@ import background from '../assets/background.svg';
 	<div class="welcome-container">
 		<div class="welcome-text">
 			<h2>Welcome to Peace Houston</h2>
-			<p>Your welcome message here...</p>
+			<!--	 <p>Your welcome message here...</p> -->
 			<button class="live-chat-button">Start Live Chat</button>
 		</div>
 		<div class="welcome-video">  
@@ -74,15 +74,14 @@ import background from '../assets/background.svg';
 	@media (max-width: 768px) {
 		.welcome-container {
 			flex-direction: column;
+			align-items: stretch;
+			gap: 20px;
 		}
 
 		.welcome-text,
+		
 		.welcome-video {
-			flex: 0 0 100%;
-		}
-
-		.welcome-video iframe {
-			height: 16rem;
+			min-height: auto;
 		}
 	}
 </style>
