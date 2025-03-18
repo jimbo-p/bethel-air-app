@@ -1,12 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep your existing global styles below */
 .section-divider {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 60px;
-    background-color: #07A7AC;
+    background-color: var(--primary);
     font-size: 24px;
     font-weight: bold;
-    color: #eff6f6;
+    color: var(--text-light);
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
+/* ... rest of your existing global styles ... */
+
+:root {
+  --primary: #07A7AC;
+  --primary-dark: #0b8d91;
+  --text-light: #eff6f6;
+  --text-lighter: #e0f0f0;
+  --background-overlay: rgba(0, 0, 0, 0.7);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+} 

@@ -6,10 +6,11 @@
     <a href="/" class="logo-link"></a>
   </div>
   <nav class="nav-links">
-    <a href="/calendar">Calendar</a>
-    <a href="/resources">Resources</a>
-    <a href="/blog">Blog</a>
-    <a href="/about">About</a>
+    <a href="#welcome">Welcome</a>
+    <a href="#calendar">Calendar</a>
+    <a href="#resources">Resources</a>
+    <a href="#blog">Blog</a>
+    <a href="#about">About</a>
   </nav>
 </header>
   
@@ -25,14 +26,15 @@
     padding-right: 40px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #07A7AC;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary);
+    box-shadow: 0 4px 6px var(--shadow-color);
     flex-wrap: wrap;
+    z-index: 100;
   }
   
     .logo {
       position: relative;
-      background-image: url('../assets/logo.jpg');
+      background-image: url('/web-app-manifest-512x512.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -57,7 +59,40 @@
   
     .nav-links a {
       text-decoration: none;
-      color: #eff6f6;
+      color: var(--text-light);
       font-size: 24px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-lighter);
     }
   </style>
+
+<script>
+  // Add smooth scrolling behavior
+  document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Only apply to hash links (not the home link)
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          
+          const targetId = href.substring(1);
+          const targetElement = document.getElementById(targetId);
+          
+          if (targetElement) {
+            // Smooth scroll to the element
+            window.scrollTo({
+              top: targetElement.offsetTop - 80, // Offset for the sticky header
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+  });
+</script>

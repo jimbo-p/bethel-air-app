@@ -20,7 +20,7 @@ const socialLinks = [
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <img src={`public/social/${social.platform.toLowerCase()}.svg`} alt={social.platform} />
+                    {/* <img src={`public/social/${social.platform.toLowerCase()}.svg`} alt={social.platform} /> */}
                 </a>
             ))}
         </div>
@@ -29,30 +29,14 @@ const socialLinks = [
 
 <style>
     #about {
-        background-image: url('public/about-background.jpg');
+        /* background-image: url('public/about-background.jpg'); */
         background-size: cover;
         background-position: center;
         color: white;
-        padding: 0;
-        margin: 0;
-    }
-
-    .section-divider {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 60px;
-        background-color: #07A7AC;
-        font-size: 24px;
-        font-weight: bold;
-        color: #eff6f6;
-        padding: 10px;
-        margin: 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .about-content {
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: var(--background-overlay);
         padding: 40px 20px;
         max-width: 800px;
         margin: 0 auto;
@@ -82,14 +66,14 @@ const socialLinks = [
         align-items: center;
         width: 50px;
         height: 50px;
-        background-color: #07A7AC;
+        background-color: var(--primary);
         border-radius: 50%;
         transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
     .social-media a:hover {
         transform: translateY(-5px);
-        background-color: #0b8d91;
+        background-color: var(--primary-dark);
     }
 
     .social-media img {

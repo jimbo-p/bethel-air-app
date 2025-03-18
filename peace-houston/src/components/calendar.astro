@@ -1,46 +1,53 @@
----
----
-
 <section id="calendar">
-    <div class="section-divider">
-      Please schedule a face-to-face meet up with someone from our team
+  <div class="section-divider">Please schedule a face-to-face meet up with someone from our team</div>
+  
+  <div class="calendar-container">
+    <div 
+      class="calendly-inline-widget" 
+      data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1&primary_color=0b8d91"
+      style="min-width:320px;height:730px;">
     </div>
-    <div class="calendar-container">
-      <!-- Calendly inline widget begin -->
-       <!-- 
-      <div class="calendly-inline-widget" 
-      data-url="https://calendly.com/bethel-peace-houston/in-person-meetup?background_color=FFFFFF&primary_color=0b8d91&hide_gdpr_banner=1"
-      data-hide_gdpr_banner="1">
-      </div>-->
-
-      <div class="calendly-inline-widget" data-url="https://calendly.com/d/cqwn-kxh-s2v?background_color=FFFFFF&primary_color=0b8d91&hide_gdpr_banner=1"></div>
-      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-      <!-- Calendly inline widget end -->
-    </div>
+    <script 
+      type="text/javascript" 
+      src="https://assets.calendly.com/assets/external/widget.js" 
+      async>
+    </script>
+  </div>
 </section>
-  
-<style>
-    #calendar {
-      min-height: 55vh;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding: 20px 0;
-    }
-  
-    .calendar-container {
-      flex: 1;
-      display: flex;
-      width: 100%;
-      background-image: url('../assets/calendar_background.jpg');  /* Add your image path here */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
 
-    .calendly-inline-widget {
-      flex: 1;
-      min-height: 700px;
-      width: 100%;
-    }
+<style>
+
+
+  /* The container that holds Calendly and the background */
+  .calendar-container {
+    /* Fill up the viewport so the background is visible */
+    min-height: 60vh;
+
+    /* Use flex to center Calendly horizontally (and optionally vertically) */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* or 'center' if you want vertical centering */
+
+    /* Your background image */
+    background: url('../assets/calendar_background.jpg') center center no-repeat;
+    background-size: cover;
+
+    /* Padding around the iframe so it's not flush to the edges */
+    padding: 20px;
+  }
+
+  /* Tweak the inline widget to remove extra "white card" styling */
+  .calendly-inline-widget {
+    /* Let it shrink on small screens, but cap the width on large screens */
+    width: 100%;
+    max-width: 600px;
+
+    /* If Calendly is adding a white card behind the form, you can try removing it: */
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+
+    /* Ensure enough height for the embedded form (Calendly suggests ~700px) */
+    min-height: 700px;
+  }
 </style>
