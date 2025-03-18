@@ -31,22 +31,9 @@ const blogPosts = [
 <style>
     #blog {
         padding: 0;
-        background-color: #0b8d91;
+        background-color: var(--primary-dark);
     }
 
-    .section-divider {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 60px;
-        background-color: #07A7AC;
-        font-size: 24px;
-        font-weight: bold;
-        color: #eff6f6;
-        padding: 10px;
-        margin: 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
 
     .blog-grid {
         display: grid;
@@ -58,7 +45,7 @@ const blogPosts = [
     }
 
     .blog-item {
-        color: #eff6f6;
+        color: var(--text-light);
         padding: 20px;
         border-radius: 10px;
         transition: transform 0.3s ease;

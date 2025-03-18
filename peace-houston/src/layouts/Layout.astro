@@ -9,22 +9,23 @@ const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="peace">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Peace Houston - Resources and Support" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VTH5QR11P"></script>    
     <script>
+      // @ts-nocheck
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-7M7HGZ310S');
+      gtag('config', 'G-4VTH5QR11P');
     </script>
   </head>
   <body>
@@ -38,6 +39,6 @@ const { title } = Astro.props;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background-color: #0b8d91;
+    background-color: var(--primary-dark);
   }
 </style>
