@@ -24,4 +24,46 @@
   --text-lighter: #e0f0f0;
   --background-overlay: rgba(0, 0, 0, 0.7);
   --shadow-color: rgba(0, 0, 0, 0.1);
+  /* Define the reusable gradient */
+  --header-gradient: linear-gradient(90deg, rgba(193, 222, 233, 0.51) 0%, rgba(41, 100, 196, 0.51) 100%);
+  
+  /* New gradient variables */
+  --green-gradient: linear-gradient(0deg, #00B241, #00B241);
+  --blue-gradient-fallback: linear-gradient(90deg, rgba(193, 222, 233, 0.51) 0%, rgba(41, 100, 196, 0.51) 100%);
+  --blue-gradient-p3: linear-gradient(90deg, color(display-p3 0.780 0.867 0.910 / 0.51) 0%, color(display-p3 0.224 0.388 0.741 / 0.51) 100%);
+  
+  /* Combined gradient for modern browsers with fallback */
+  --main-gradient: var(--green-gradient), var(--blue-gradient-fallback);
+  
+  /* Hero gradient */
+  --hero-gradient: linear-gradient(90deg, rgba(193, 222, 233, 0.32) 40%, rgba(41, 100, 196, 0.32) 100%), #F4F4EE;
+  
+  /* Text colors */
+  --teal-text: #1D777F;
+  --blue-text: #1E4982;
+} 
+
+/* Utility classes for applying gradients */
+.bg-main-gradient {
+  background: var(--main-gradient);
+}
+
+.bg-green-gradient {
+  background: var(--green-gradient);
+}
+
+.bg-blue-gradient {
+  background: var(--blue-gradient-fallback);
+  /* Try to use the P3 color space if supported */
+  @supports (color: color(display-p3 0 0 0)) {
+    background: var(--blue-gradient-p3);
+  }
+}
+
+.bg-hero-gradient {
+  background: var(--hero-gradient);
+  /* Try to use the P3 color space if supported */
+  @supports (color: color(display-p3 0 0 0)) {
+    background: linear-gradient(90deg, color(display-p3 0.780 0.867 0.910 / 0.32) 40%, color(display-p3 0.224 0.388 0.741 / 0.32) 100%), color(display-p3 0.957 0.957 0.933);
+  }
 } 

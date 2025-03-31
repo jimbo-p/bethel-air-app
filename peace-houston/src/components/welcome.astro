@@ -2,86 +2,54 @@
 import background from '../assets/background.svg';
 ---
 
-<section id="welcome">
-	<div class="welcome-container">
-		<div class="welcome-text">
-			<h2>Welcome to Peace Houston</h2>
-			<!--	 <p>Your welcome message here...</p> -->
-			<button class="live-chat-button">Start Live Chat</button>
-		</div>
-		<div class="welcome-video">  
-			<iframe 
-				src="https://www.youtube.com/embed/tjQwe3K3aW0?si=Do25mGisVDos0atW&autoplay=1&mute=1"
-				frameborder="0" 
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-				referrerpolicy="strict-origin-when-cross-origin"
-				allowfullscreen>
-			</iframe>
+<section id="welcome" class="relative w-full">
+	<div class="bg-hero-gradient flex flex-col items-center pt-[100px] pb-[55px] px-4 min-h-[600px]">
+		<div class="max-w-[1440px] w-full flex flex-col md:flex-row justify-between items-center gap-8 md:gap-[40px] px-4">
+			<!-- Hero Content (Left side) -->
+			<div class="flex flex-col justify-center items-center pb-5 w-full md:w-[45%] md:max-w-[500px] mt-6">
+				<!-- Heading -->
+				<h1 class="font-['Inter'] font-bold text-4xl md:text-5xl leading-tight text-center text-[#1D777F] mb-6">
+					Welcome to<br />
+					PeaceHouston.com<br />
+					We are here for you.
+				</h1>
+				
+				<!-- Paragraph -->
+				<div class="w-full">
+					<p class="font-['Inter'] font-semibold text-sm leading-5 text-center text-[#1E4982] mb-6 max-w-[480px] mx-auto">
+						We are people just like you who know the impact that anxiety, worry, and fear can have on your life.
+						<br><br>
+						We have found freedom in this truth - Peace is possible.
+						<br><br>
+						There is a place, a sense of well-being that is beyond your circumstances.
+						So we ask you this: will you take a small step toward peace?
+					</p>
+				</div>
+				
+				<!-- Button -->
+				<a href="#calendar" class="flex flex-row justify-center items-center px-[42px] w-full max-w-[400px] h-12 bg-white rounded-[55px] shadow-sm">
+					<span class="font-['Inter'] font-semibold text-lg leading-[18px] text-center text-[#1D777F]">
+						Schedule A Meeting
+					</span>
+				</a>
+			</div>
+			
+			<!-- Video Section (Right side) - Made larger -->
+			<div class="w-full md:w-[55%] md:max-w-[700px] aspect-video rounded-[9px] overflow-hidden">
+				<iframe 
+					src="https://www.youtube.com/embed/tjQwe3K3aW0?si=Do25mGisVDos0atW&autoplay=1&mute=1"
+					class="w-full h-full rounded-[9px]"
+					frameborder="0" 
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen>
+				</iframe>
+			</div>
 		</div>
 	</div>
 </section>
 
 <style>
-	.welcome-container {
-		display: flex;
-		gap: 30px;
-		padding-left: 20px;
-		padding-right: 20px;
-		padding-top: 20px;
-		padding-bottom: 20px;
-		align-items: center;
-	}
-
-	.welcome-text {
-		flex: 0 0 27%;
-		text-align: center;
-	}
-
-	.welcome-video {
-		flex: 1 0 70%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 500px;
-		overflow: hidden;
-	}
-
-	.welcome-video iframe {
-		aspect-ratio: 16/9;
-		height: min(500px, 100%);
-		width: min(100%, 889px);
-		border-radius: 4%;
-	}
-
-	h2, p {
-		color: var(--text-light);
-		margin: 0;
-	}
-
-	h2 {
-		margin-bottom: 1rem;
-	}
-	.live-chat-button {
-		margin-top: 20px;
-		padding: 10px 20px;
-		background-color: #20c18e;
-		color: var(--text-light);
-		border: none;
-		border-radius: 25px;
-		cursor: pointer;
-	}
-
-	@media (max-width: 768px) {
-		.welcome-container {
-			flex-direction: column;
-			align-items: stretch;
-			gap: 20px;
-		}
-
-		.welcome-text,
-		
-		.welcome-video {
-			min-height: auto;
-		}
-	}
+	/* You can remove this if you already load Inter font elsewhere in your project */
+	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap');
 </style>

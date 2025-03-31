@@ -1,98 +1,85 @@
 ---
+// Header based directly on Figma design with responsive navigation
+const navLinks = [
+  { href: "#resources", label: "Resources" },
+  { href: "#blog", label: "Blog" },
+  { href: "#about", label: "About Us" },
+];
+
+const scheduleLink = { href: "#calendar", label: "Schedule A Meeting" };
 ---
 
-<header>
-  <div class="logo">
-    <a href="/" class="logo-link"></a>
+<header class="absolute top-4 left-0 right-0 z-50 px-2 sm:px-3">
+  <div class="flex flex-row items-center p-2 w-full max-w-[1600px] h-16 min-h-[64px] mx-auto rounded-2xl"
+       style="background: linear-gradient(90deg, rgba(193, 222, 233, 0.39) 0%, rgba(93, 137, 213, 0.39) 100%), #38C15C; box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);">
+    
+    <!-- Navbar Content Container -->
+    <div class="flex flex-row items-center w-full h-12">
+      
+      <!-- Left Container with Logo -->
+      <div class="flex flex-row items-start px-4 sm:px-8 flex-1 h-12 order-0">
+        <div class="flex flex-row justify-center items-center px-[18px] h-12 min-h-12 rounded-lg">
+          <!-- Updated to use PH_Icon_03.png -->
+          <img src="/PH_Icon_03.png" alt="Peace Houston Logo" class="h-8 w-auto mr-2">
+          <!-- Keep Viga font only for the logo text -->
+          <span class="font-['Viga'] font-normal text-xl leading-7 flex items-center text-center text-[#F2F2F2]">
+            PeaceHouston
+          </span>
+        </div>
+      </div>
+      
+      <!-- Center Container with Navigation - Only visible on desktop -->
+      <div class="hidden lg:flex flex-row justify-center items-center gap-[10px] w-[461.33px] h-12 flex-1 order-1">
+        <div class="flex flex-row items-center gap-2 w-auto h-12">
+          {navLinks.map((link) => (
+            <a href={link.href} class="flex flex-row justify-center items-center px-4 h-12 hover:bg-white hover:bg-opacity-10 rounded-lg transition-colors duration-200">
+              <!-- Ensure consistent font styling for nav items -->
+              <span class="font-['Inter'] font-semibold text-sm leading-[14px] text-[#F2F2F2]">
+                {link.label}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Right Container with CTA and mobile menu -->
+      <div class="flex flex-row justify-end items-center gap-[10px] flex-1 order-2 px-4">
+        <!-- "Schedule A Meeting" button - visible on medium screens and up -->
+        <div class="hidden md:flex flex-row items-start">
+          <!-- Fixed width to prevent wrapping and ensure text stays on one line -->
+          <a href={scheduleLink.href} class="flex flex-row justify-center items-center px-4 gap-2 w-[180px] h-12 bg-[#F3F4F5] rounded-[17px] shadow-sm">
+            <span class="font-['Inter'] font-semibold text-sm leading-[14px] flex items-center justify-center whitespace-nowrap text-[#256D80]">
+              {scheduleLink.label}
+            </span>
+          </a>
+        </div>
+        
+        <!-- Mobile Menu Button - only visible on smaller screens -->
+        <div class="lg:hidden flex items-center">
+          <div class="dropdown dropdown-end">
+            <button class="flex items-center justify-center h-12 w-12 text-[#F2F2F2]" tabindex="0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+            <!-- Make sure dropdown menu items have the correct font -->
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10 font-['Inter'] font-semibold text-sm">
+              {navLinks.map((link) => (
+                <li><a href={link.href}>{link.label}</a></li>
+              ))}
+              <!-- Only show Schedule link in dropdown for smaller screens where the button is hidden -->
+              <li class="md:hidden"><a href={scheduleLink.href}>{scheduleLink.label}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <nav class="nav-links">
-    <a href="#welcome">Welcome</a>
-    <a href="#calendar">Calendar</a>
-    <a href="#resources">Resources</a>
-    <a href="#blog">Blog</a>
-    <a href="#about">About</a>
-  </nav>
 </header>
-  
+
+<!-- Add the Inter font if not already loaded in your project -->
 <style>
-  header {
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    padding-left: 30px;
-    padding-right: 40px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: var(--primary);
-    box-shadow: 0 4px 6px var(--shadow-color);
-    flex-wrap: wrap;
-    z-index: 100;
-  }
-  
-    .logo {
-      position: relative;
-      background-image: url('/web-app-manifest-512x512.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      width: 70px;
-      height: 60px;
-      border-radius: 10%;
-    }
-  
-    .logo-link {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  
-    .nav-links {
-      display: inline-flex;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
-  
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-light);
-      font-size: 24px;
-      transition: color 0.3s ease;
-    }
+  /* You can remove this if you already load Inter font elsewhere in your project */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Viga&display=swap');
+</style>
 
-    .nav-links a:hover {
-      color: var(--text-lighter);
-    }
-  </style>
-
-<script>
-  // Add smooth scrolling behavior
-  document.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        // Only apply to hash links (not the home link)
-        const href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-          e.preventDefault();
-          
-          const targetId = href.substring(1);
-          const targetElement = document.getElementById(targetId);
-          
-          if (targetElement) {
-            // Smooth scroll to the element
-            window.scrollTo({
-              top: targetElement.offsetTop - 80, // Offset for the sticky header
-              behavior: 'smooth'
-            });
-          }
-        }
-      });
-    });
-  });
-</script>

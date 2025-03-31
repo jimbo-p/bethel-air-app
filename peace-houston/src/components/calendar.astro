@@ -1,53 +1,128 @@
-<section id="calendar">
-  <div class="section-divider">Please schedule a face-to-face meet up with someone from our team</div>
+<section id="calendar" class="relative w-full">
   
-  <div class="calendar-container">
-    <div 
-      class="calendly-inline-widget" 
-      data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1&primary_color=0b8d91"
-      style="min-width:320px;height:730px;">
+  <div class="calendar-hero">
+    <div class="calendar-overlay"></div>
+    <div class="calendar-content">
+      <div class="calendly-container">
+        <div 
+          class="calendly-inline-widget" 
+          data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1&primary_color=0b8d91">
+        </div>
+        <script 
+          type="text/javascript" 
+          src="https://assets.calendly.com/assets/external/widget.js" 
+          async>
+        </script>
+      </div>
     </div>
-    <script 
-      type="text/javascript" 
-      src="https://assets.calendly.com/assets/external/widget.js" 
-      async>
-    </script>
   </div>
 </section>
 
 <style>
+  /* Import Inter font */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
+  /* Main hero section with background image */
+  .calendar-hero {
+    position: relative;
+    width: 100%;
+    max-width: 1440px;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 auto;
+    background: url('../assets/Female_Friends_Meeting_In_Cafe_original_4647221.png') center center no-repeat;
+    background-size: cover;
+    isolation: isolate;
+  }
 
-  /* The container that holds Calendly and the background */
-  .calendar-container {
-    /* Fill up the viewport so the background is visible */
-    min-height: 60vh;
+  /* Dark overlay */
+  .calendar-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+    z-index: 0;
+  }
 
-    /* Use flex to center Calendly horizontally (and optionally vertically) */
+  /* Content container */
+  .calendar-content {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* or 'center' if you want vertical centering */
-
-    /* Your background image */
-    background: url('../assets/calendar_background.jpg') center center no-repeat;
-    background-size: cover;
-
-    /* Padding around the iframe so it's not flush to the edges */
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
     padding: 20px;
   }
 
-  /* Tweak the inline widget to remove extra "white card" styling */
+  /* Heading style from Figma */
+  .calendar-heading {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 38px; /* Slightly reduced */
+    line-height: 100%;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 0;
+  }
+
+  /* Paragraph style from Figma */
+  .calendar-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    max-width: 456px;
+    margin: 0 auto;
+  }
+
+  /* Calendly container */
+  .calendly-container {
+    width: 80%;
+    max-width: 1000px;
+    height: 700px;
+    z-index: 1;
+    background: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: none;
+  }
+
+  /* Calendly inline widget */
   .calendly-inline-widget {
-    /* Let it shrink on small screens, but cap the width on large screens */
     width: 100%;
-    max-width: 600px;
-
-    /* If Calendly is adding a white card behind the form, you can try removing it: */
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-
-    /* Ensure enough height for the embedded form (Calendly suggests ~700px) */
+    height: 100%;
     min-height: 700px;
+    background: transparent !important;
+  }
+
+  /* Adding this to ensure any iframe or content inside is also transparent */
+  .calendly-inline-widget iframe {
+    background: transparent !important;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .calendar-hero {
+      min-height: 650px;
+    }
+    
+    .calendly-container {
+      width: 90%;
+      height: 600px;
+    }
+    
+    .calendly-inline-widget {
+      min-height: 600px;
+    }
   }
 </style>
+
