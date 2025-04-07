@@ -41,6 +41,17 @@
   /* Text colors */
   --teal-text: #1D777F;
   --blue-text: #1E4982;
+
+  /* Chat Bubble Colors - Updated */
+  --chat-avatar-bg: #293441;
+  --chat-avatar-text: #D6DDE5; /* Figma color */
+  --chat-header-text: #293441;
+  /* Original gradient from Figma spec for chat bubble background */
+  --chat-bubble-bg-fallback: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(30, 79, 89, 0.223204) 63.77%, rgba(116, 211, 134, 0.35) 100%), #2F81CF;
+  --chat-bubble-bg-p3: linear-gradient(90deg, color(display-p3 0.000 0.000 0.000 / 0) 0%, color(display-p3 0.169 0.306 0.345 / 0.223204) 63.77%, color(display-p3 0.545 0.816 0.553 / 0.35) 100%), color(display-p3 0.275 0.498 0.788);
+  --chat-bubble-text: #D6DDE5; /* Original Figma color */
+  --chat-footer-text: #293441;
+  --chat-bubble-tail-bg: #2F81CF; /* Solid color for the tail */
 } 
 
 /* Utility classes for applying gradients */
@@ -65,5 +76,69 @@
   /* Try to use the P3 color space if supported */
   @supports (color: color(display-p3 0 0 0)) {
     background: linear-gradient(90deg, color(display-p3 0.780 0.867 0.910 / 0.32) 40%, color(display-p3 0.224 0.388 0.741 / 0.32) 100%), color(display-p3 0.957 0.957 0.933);
+  }
+}
+
+/* Custom Chat Bubble Component Styles */
+@layer components {
+  .peace-chat-container {
+    @apply flex items-start gap-4 mb-8; /* Standard layout */
+  }
+  .peace-chat-avatar-placeholder {
+    @apply bg-[var(--chat-avatar-bg)] text-[var(--chat-avatar-text)] rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold;
+  }
+  .peace-chat-content {
+    @apply flex flex-col items-start;
+  }
+  .peace-chat-header {
+    @apply text-xs text-[var(--chat-header-text)] mb-1;
+  }
+  .peace-chat-header time {
+    @apply opacity-40 ml-1;
+  }
+  .peace-chat-bubble {
+    /* Apply gradient background */
+    background: var(--chat-bubble-bg-fallback);
+    @supports (color: color(display-p3 0 0 0)) {
+        background: var(--chat-bubble-bg-p3);
+    }
+    @apply text-[var(--chat-bubble-text)] py-2 px-4 my-1 rounded-2xl relative;
+    /* Apply bubble specific styles */
+    font-weight: 600; /* From Figma/blog */
+    font-size: 20px;   /* From Figma/blog - Removed !important */
+    line-height: 28px; /* From Figma/blog - Removed !important */
+    overflow-wrap: break-word; /* Ensure text wraps */
+    max-width: 100%; /* Restrict width to encourage wrapping */
+  }
+  .peace-chat-bubble-start { /* Specific for chat-start */
+      border-radius: 16px 16px 16px 0px; /* Original Figma radius */
+      @apply rounded-bl-none; /* Ensure tail corner is sharp */
+  }
+   .peace-chat-bubble-start::before {
+       content: '';
+       position: absolute;
+       bottom: 0;
+       left: -8px; /* Keep position outside */
+       width: 16px; /* Keep size */
+       height: 16px;
+       /* Use solid color for tail */
+       background-color: var(--chat-bubble-tail-bg);
+       /* Updated clip-path: TL(0,0), BL(0,1), BR(1,1) -> points right */
+       clip-path: polygon(0 0, 100% 0, 100% 100%);
+       transform: rotate(90deg);
+
+           
+    .chat-bubble {
+        position: relative;
+    }
+    
+    
+   }
+   /* Add styles for chat-end if needed later */
+   /* .peace-chat-bubble-end { ... } */
+   /* .peace-chat-bubble-end::before { ... } */
+
+  .peace-chat-footer {
+    @apply text-xs text-[var(--chat-footer-text)] opacity-40 mt-1;
   }
 } 

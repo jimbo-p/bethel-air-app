@@ -29,7 +29,10 @@ const { title } = Astro.props;
     </script>
   </head>
   <body>
-    <slot />
+    <div class="layout-content-wrapper">
+       <slot />
+    </div>
+    <slot name="footer" />
   </body>
 </html>
 
@@ -48,6 +51,31 @@ const { title } = Astro.props;
   }
   
   section:not(#calendar):not(#welcome) {
-    background: var(--hero-gradient);
+    /* Keep section-specific background if needed, or remove if layout wrapper handles it */
+    /* background: var(--hero-gradient); */ 
   }
+
+  /* Define the wrapper styles */
+  .layout-content-wrapper {
+    max-width: theme('screens.7xl', '1366px'); /* Consistent max-width (using Tailwind config or fallback) */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: theme('padding.4', '1rem'); /* Consistent padding (using Tailwind config or fallback) */
+    padding-right: theme('padding.4', '1rem');
+  }
+
+  /* Responsive padding adjustments (Optional, based on Tailwind defaults) */
+  @media (min-width: 640px) {
+    .layout-content-wrapper {
+      padding-left: theme('padding.6', '1.5rem');
+      padding-right: theme('padding.6', '1.5rem');
+    }
+  }
+  @media (min-width: 1024px) {
+    .layout-content-wrapper {
+      padding-left: theme('padding.8', '2rem');
+      padding-right: theme('padding.8', '2rem');
+    }
+  }
+
 </style>

@@ -1,76 +1,123 @@
 ---
-const blogPosts = [
+const accordionItems = [
     {
-        title: "What is anxiety?",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+        title: "Anxious thoughts",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
     {
-        title: "How can I manage anxiety?",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+        title: "Isolation",
+        content: "Content for Isolation goes here..." // Placeholder
     },
     {
-        title: "Understanding panic attacks",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, lectus a sagittis tristique, purus elit vestibulum turpis, non fringilla mauris arcu vel sapien."
+        title: "What is peace?",
+        content: "Content for What is peace? goes here..." // Placeholder
     }
-    // Add more blog posts as needed
 ];
 ---
+{/* Section remains unconstrained */}
+<section id="blog" class="py-8">
+    {/* Update max-width on the wrapper div */}
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Move existing content inside the wrapper */}
+      <div class="peace-chat-container mb-8"> {/* Added margin-bottom */}
+          <div class="chat-image avatar placeholder">
+               <div class="peace-chat-avatar-placeholder">
+                  <span>PH</span>
+               </div>
+          </div>
+          <div class="peace-chat-content">
+              <div class="peace-chat-header">
+                  PeaceHouston
+                  <time>1:33PM</time>
+              </div>
+              <div class="peace-chat-bubble peace-chat-bubble-start">
+                  We've written a few thoughts below with you in mind...
+              </div>
+              <div class="peace-chat-footer">
+                  Delivered
+              </div>
+          </div>
+      </div>
 
-<section id="blog">
-    <div class="section-divider">We've written a few things with you in mind—click below to explore!</div>
-    <div class="blog-grid">
-        {blogPosts.map((post) => (
-            <div class="blog-item">
-                <h3>{post.title}</h3>
-                <p>{post.content}</p>
-            </div>
-        ))}
-    </div>
+      <div class="space-y-2 accordion-container">
+          {accordionItems.map((item, index) => (
+              <div class="collapse collapse-arrow join-item border-base-300 border accordion-item">
+                   <input type="radio" name="thought-accordion" id={`accordion-${index}`} checked={index === 0 ? true : undefined} />
+                  <div class="collapse-title text-xl font-semibold accordion-title">
+                      {item.title}
+                  </div>
+                  <div class="collapse-content accordion-content">
+                      <p>{item.content}</p>
+                  </div>
+              </div>
+          ))}
+      </div>
+    </div> {/* End of constrained wrapper */}
 </section>
 
 <style>
-    #blog {
-        padding: 0;
-        background-color: var(--primary-dark);
+    /* Import font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    #thoughts-section {
+        font-family: 'Inter', sans-serif;
+        /* Removed padding-left/right, handled by Layout */
     }
 
+    /* --- Removed Chat Bubble Styles (Now in globals.css) --- */
 
-    .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
+
+    /* --- Accordion Styling (Remains the same, scoped locally) --- */
+    .accordion-container {
+        filter: drop-shadow(0px 4px 21.9px rgba(0, 0, 0, 0.13));
     }
 
-    .blog-item {
-        color: var(--text-light);
-        padding: 20px;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-        cursor: pointer;
+    .accordion-item {
+        border: none;
+        border-radius: 16px;
+        background: linear-gradient(90deg, color(display-p3 0.780 0.867 0.910 / 0.51) 0%, color(display-p3 0.224 0.388 0.741 / 0.51) 100%), color(display-p3 0.298 0.686 0.314);
+        background: linear-gradient(90deg, rgba(193, 222, 233, 0.51) 0%, rgba(41, 100, 196, 0.51) 100%), #4CAF50; /* Fallback */
+        padding: 1px;
     }
 
-    .blog-item:hover {
-        transform: translateY(-5px);
+     .accordion-item .collapse-title,
+     .accordion-item .collapse-content {
+         background: transparent;
+         color: #E5E6E6;
     }
 
-    .blog-item h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-size: 1.5rem;
+    /* Arrow color - Attempting override */
+    .accordion-item .collapse-title:after {
+         --tw-bg-opacity: 1;
+         background-color: #E5E6E6 !important; /* Override DaisyUI theme variable */
     }
 
-    .blog-item p {
-        margin: 0;
-        line-height: 1.6;
+    .accordion-title {
+        padding: 16px;
+        min-height: 60px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        color: #E5E6E6;
+        display: flex;
+        align-items: center;
     }
 
-    @media (max-width: 768px) {
-        .blog-grid {
-            grid-template-columns: 1fr;
-            padding: 10px;
-        }
+    .accordion-content {
+        padding: 0px 16px 16px;
+        color: #E5E6E6;
     }
+
+     .accordion-content p {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 28px;
+        max-width: 828px;
+    }
+
+    .accordion-item input[type="radio"]:focus + .collapse-title { }
+    .accordion-item input[type="radio"]:checked { }
+    .accordion-item input[type="radio"]:checked + .collapse-title { }
+    .accordion-item input[type="radio"]:checked + .collapse-title + .collapse-content { }
+
 </style>

@@ -1,19 +1,17 @@
-<section id="calendar" class="relative w-full">
+<section id="calendar" class="relative w-full max-w-screen-2xl mx-auto">
   
   <div class="calendar-hero">
     <div class="calendar-overlay"></div>
-    <div class="calendar-content">
-      <div class="calendly-container">
-        <div 
-          class="calendly-inline-widget" 
-          data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1&primary_color=0b8d91">
-        </div>
-        <script 
-          type="text/javascript" 
-          src="https://assets.calendly.com/assets/external/widget.js" 
-          async>
-        </script>
+    
+    <div class="calendly-container">
+      <!-- Calendly inline widget begin -->
+      <div 
+        class="calendly-inline-widget" 
+        data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1" 
+        data-resize="true">
       </div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
   </div>
 </section>
@@ -26,14 +24,12 @@
   .calendar-hero {
     position: relative;
     width: 100%;
-    max-width: 1440px;
     min-height: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0;
-    margin: 0 auto;
     background: url('../assets/Female_Friends_Meeting_In_Cafe_original_4647221.png') center center no-repeat;
     background-size: cover;
     isolation: isolate;
@@ -46,82 +42,37 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+    background: rgba(0, 0, 0, 0.15);
     z-index: 0;
-  }
-
-  /* Content container */
-  .calendar-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    padding: 20px;
-  }
-
-  /* Heading style from Figma */
-  .calendar-heading {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 38px; /* Slightly reduced */
-    line-height: 100%;
-    text-align: center;
-    color: #FFFFFF;
-    margin-bottom: 0;
-  }
-
-  /* Paragraph style from Figma */
-  .calendar-text {
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-    color: #FFFFFF;
-    max-width: 456px;
-    margin: 0 auto;
   }
 
   /* Calendly container */
   .calendly-container {
-    width: 80%;
-    max-width: 1000px;
-    height: 700px;
+    width: 90%;
+    max-width: 600px;
     z-index: 1;
-    background: transparent;
-    border-radius: 8px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: none;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Calendly inline widget */
   .calendly-inline-widget {
     width: 100%;
-    height: 100%;
-    min-height: 700px;
+    min-height: 450px;
     background: transparent !important;
-  }
-
-  /* Adding this to ensure any iframe or content inside is also transparent */
-  .calendly-inline-widget iframe {
-    background: transparent !important;
+    border: none;
+    position: relative;
+    z-index: 5;
   }
 
   /* Responsive adjustments */
   @media (max-width: 768px) {
-    .calendar-hero {
-      min-height: 650px;
-    }
-    
     .calendly-container {
-      width: 90%;
-      height: 600px;
-    }
-    
-    .calendly-inline-widget {
-      min-height: 600px;
+      width: 100%;
     }
   }
 </style>
