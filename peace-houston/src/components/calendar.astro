@@ -1,6 +1,12 @@
+---
+import coffeeChatImage from '../assets/coffee_chat_andrew_edit.png'; 
+---
 <section id="calendar" class="relative w-full max-w-screen-2xl mx-auto">
   
-  <div class="calendar-hero">
+  <div 
+    class="calendar-hero" 
+    style={`background-image: url(${coffeeChatImage.src})`}
+  >
     <div class="calendar-overlay"></div>
     
     <div class="calendly-container">
@@ -32,7 +38,8 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    background: url('../assets/coffee_chat_andrew_edit.png') center center no-repeat;
+    background-position: center center;
+    background-repeat: no-repeat;
     background-size: cover;
     isolation: isolate;
     /* Optional: Add border-radius if you want rounded corners */
