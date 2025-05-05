@@ -1,53 +1,85 @@
-<section id="calendar">
-  <div class="section-divider">Please schedule a face-to-face meet up with someone from our team</div>
+<section id="calendar" class="relative w-full max-w-screen-2xl mx-auto">
   
-  <div class="calendar-container">
-    <div 
-      class="calendly-inline-widget" 
-      data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1&primary_color=0b8d91"
-      style="min-width:320px;height:730px;">
+  <div class="calendar-hero">
+    <div class="calendar-overlay"></div>
+    
+    <div class="calendly-container">
+      <!-- Calendly inline widget begin -->
+      <div 
+        class="calendly-inline-widget" 
+        data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1" 
+        data-resize="true">
+      </div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
-    <script 
-      type="text/javascript" 
-      src="https://assets.calendly.com/assets/external/widget.js" 
-      async>
-    </script>
   </div>
 </section>
 
 <style>
+  /* Import Inter font */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-
-  /* The container that holds Calendly and the background */
-  .calendar-container {
-    /* Fill up the viewport so the background is visible */
-    min-height: 60vh;
-
-    /* Use flex to center Calendly horizontally (and optionally vertically) */
+  /* Main hero section with background image */
+  .calendar-hero {
+    position: relative;
+    max-width: 1280px; /* Example: Set a max-width (e.g., screen-xl). Adjust as needed. */
+    margin-left: auto; /* Center the div horizontally */
+    margin-right: auto; /* Center the div horizontally */
+    min-height: 700px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start; /* or 'center' if you want vertical centering */
-
-    /* Your background image */
-    background: url('../assets/calendar_background.jpg') center center no-repeat;
+    padding: 0;
+    background: url('../assets/coffee_chat_andrew_edit.png') center center no-repeat;
     background-size: cover;
-
-    /* Padding around the iframe so it's not flush to the edges */
-    padding: 20px;
+    isolation: isolate;
+    /* Optional: Add border-radius if you want rounded corners */
+    border-radius: 1rem;
+    /* Optional: Add overflow hidden if content might exceed rounded corners */
+    overflow: hidden;
   }
 
-  /* Tweak the inline widget to remove extra "white card" styling */
-  .calendly-inline-widget {
-    /* Let it shrink on small screens, but cap the width on large screens */
-    width: 100%;
+  /* Dark overlay */
+  .calendar-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 0;
+  }
+
+  /* Calendly container */
+  .calendly-container {
+    width: 90%;
     max-width: 600px;
+    z-index: 1;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
-    /* If Calendly is adding a white card behind the form, you can try removing it: */
+  /* Calendly inline widget */
+  .calendly-inline-widget {
+    width: 100%;
+    min-height: 450px;
     background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
+    border: none;
+    position: relative;
+    z-index: 5;
+  }
 
-    /* Ensure enough height for the embedded form (Calendly suggests ~700px) */
-    min-height: 700px;
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .calendly-container {
+      width: 100%;
+    }
   }
 </style>
+

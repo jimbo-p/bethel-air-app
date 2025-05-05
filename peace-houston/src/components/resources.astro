@@ -1,111 +1,258 @@
 ---
 import { Image } from 'astro:assets';
-import podcastImage from '../assets/podcast.jpg';
-import booksImage from '../assets/books.jpg';
-import localResourcesImage from '../assets/local_resources.jpg';
+import bookOpenImage from '../assets/book_open_pages.png';
+import libraryShelvesImage from '../assets/library_shelves.png';
 
 const resources = [
     {
-        image: podcastImage,
-        title: 'Podcast',
-        description: 'Join local support groups in the Houston area.'
+        videoId: 'BqjtDh_IJ8o',
+        title: 'Getting Unstuck Ep. 282 FEAT. Jamie Windship',
+        description: "Today, we're talking about how to get unstuck, why pain is good, and living from our true identity versus this current cultural obsession with radical individualism, finding yourself inside yourself, speaking 'your truth,' and the like. So buckle up and get ready.",
+        isVideo: true
     },
     {
-        image: booksImage,
-        title: 'Meditation Resources',
-        description: 'Access guided meditations and mindfulness exercises.'
+        image: libraryShelvesImage,
+        title: 'Live No Lies by John Mark Comer',
+        description: [
+            'The bestselling author of The Ruthless Elimination of Hurry equips readers to recognize and resist the lies that seek to rob them of peace and freedom.',
+            '',
+            'Get it on Amazon or pick one up for free at Bethel Church.'
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Live-No-Lies-Recognize-Sabotage/dp/0525653120'
     },
     {
-        image: localResourcesImage,
-        title: 'Professional Help',
-        description: 'Connect with licensed therapists and counselors.'
+        image: bookOpenImage,
+        title: "Anxiety: Knowing God's Peace by Paul Tautges",
+        description: [
+            "If you are ready to dive into a 31-day study of anxiety and how to fight it, this is an excellent resource. It will teach you what anxiety is, how to trust in the creator, and exactly how to fight against your anxious feelings. After the daily devotion you will be prompted to reflect on what you've learned and to take specific action. This devotional is designed to help you change.",
+            '',
+            'Get it on Amazon or pick one up for free at Bethel Church.'
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Anxiety-Knowing-Peace-31-Day-Devotionals/dp/1629956228'
     },
 ];
 ---
 
-<section id="resources">
-    <div class="section-divider" style="margin-top: 0;">Explore these curated resources designed to support and guide you.</div>
-    <div class="resources-grid">
-        {resources.map((resource) => (
-            <div class="resource-item">
-                <Image 
-                    src={resource.image} 
-                    alt={resource.title}
-                    width={400}
-                    height={300}
-                    quality={80}
-                />
-                <div class="resource-details">
-                    <h3>{resource.title}</h3>
-                    <p>{resource.description}</p>
+<section id="resources" class="relative py-12">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="peace-chat-container mb-8">
+            <div class="peace-chat-avatar-placeholder">
+                PH
+            </div>
+            <div class="peace-chat-content">
+                <div class="peace-chat-header">
+                    <span>PeaceHouston</span>
+                    <time>12:45</time>
+                </div>
+                <div class="peace-chat-bubble peace-chat-bubble-start font-semibold">
+                    We hope these helpful resources will encourage you with each step you take.
+                </div>
+                <div class="peace-chat-footer">
+                    Delivered
                 </div>
             </div>
-        ))}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {resources.map((resource) => (
+                <div class="card relative rounded-2xl overflow-hidden shadow-xl">
+                    <div class="h-[246px] relative">
+                        {resource.isVideo ? (
+                            <div class="w-full h-full">
+                                <lite-youtube 
+                                    videoid={resource.videoId} 
+                                    style={`background-image: url('https://i.ytimg.com/vi/${resource.videoId}/maxresdefault.jpg');`}
+                                    class="w-full h-full"
+                                >
+                                    <button type="button" class="lty-playbtn">
+                                        <span class="lyt-visually-hidden">Play Video</span>
+                                    </button>
+                                </lite-youtube>
+                            </div>
+                        ) : (
+                            <Image 
+                                src={resource.image!}
+                                alt={resource.title}
+                                width={384}
+                                height={246}
+                                class="object-cover w-full h-full"
+                            />
+                        )}
+                    </div>
+                    <div class="card-body bg-[#00CFB7] bg-gradient-to-r from-[rgba(193,222,233,0.57)] to-[rgba(41,100,196,0.57)] text-white p-6">
+                        <h2 class="text-xl font-semibold mb-2">{resource.title}</h2>
+                        <p class="text-base mb-6">
+                            {Array.isArray(resource.description)
+                                ? <Fragment set:html={resource.description.join('<br />')} />
+                                : resource.description
+                            }
+                        </p>
+                        <div class="flex justify-end">
+                            {resource.isVideo ? (
+                                <div class="w-16 h-16 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12-2h4a1 1 0 011 1v10a1 1 0 01-1 1h-4V4z" />
+                                    </svg>
+                                </div>
+                            ) : (
+                                <div class="w-16 h-16 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                                    </svg>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {resource.url && !resource.isVideo && (
+                        <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="absolute inset-0 z-10"
+                            aria-label={resource.title}
+                        ></a>
+                    )}
+                </div>
+            ))}
+        </div>
     </div>
 </section>
 
 <style>
+    /* Import Inter font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-    .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .resource-item {
-        height: 250px;
-        background-color: #f8f9fa;
-        border-radius: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 6px var(--shadow-color);
-        cursor: pointer;
-        overflow: hidden;
-        position: relative;
+    .card {
         transition: transform 0.3s ease;
     }
 
-    .resource-item:hover {
-        transform: scale(1.05);
+    .card:hover {
+        transform: translateY(-5px);
     }
 
-    .resource-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    /* Lite YouTube Embed styles */
+    lite-youtube {
+        background-color: #000;
+        position: relative;
+        display: block;
+        contain: content;
+        background-position: center center;
+        background-size: cover;
+        cursor: pointer;
+        max-width: 100%;
     }
 
-    .resource-details {
-        display: none;
+    lite-youtube::before {
+        content: '';
+        display: block;
         position: absolute;
+        top: 0;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+        background-position: top;
+        background-repeat: repeat-x;
+        height: 60px;
+        padding-bottom: 50px;
+        width: 100%;
+        transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+        z-index: 1;
+    }
+
+    lite-youtube .lty-playbtn {
+        width: 68px;
+        height: 48px;
+        position: absolute;
+        cursor: pointer;
+        transform: translate3d(-50%, -50%, 0);
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        height: 90%;
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 4px 8px var(--shadow-color);
-        padding: 20px;
-        border-radius: 10px;
-        overflow-y: auto;
+        z-index: 1;
+        background-color: transparent;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24 27 14v20" fill="white"/></svg>');
+        filter: grayscale(100%);
+        transition: filter .1s cubic-bezier(0, 0, 0.2, 1);
+        border: none;
+        padding: 0;
     }
 
-    .resource-item.active .resource-details {
+    lite-youtube:hover .lty-playbtn,
+    lite-youtube .lty-playbtn:focus {
+        filter: none;
+    }
+
+    lite-youtube.lyt-activated {
+        cursor: unset;
+    }
+
+    lite-youtube.lyt-activated::before,
+    lite-youtube.lyt-activated .lty-playbtn {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    lite-youtube iframe {
+        border: 0;
         display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+
+    .lyt-visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
     }
 </style>
 
 <script>
-    // Resource click functionality
-    const resourceItems = document.querySelectorAll('.resource-item');
-    resourceItems.forEach(item => {
-        item.addEventListener('click', () => {
-            resourceItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-        });
-    });
+    // Lite YouTube Embed implementation
+    class LiteYTEmbed extends HTMLElement {
+        videoId!: string | null;
+
+        connectedCallback() {
+            this.videoId = this.getAttribute('videoid');
+            
+            let playBtn = this.querySelector('.lty-playbtn');
+            if (!playBtn) {
+                playBtn = document.createElement('button');
+                (playBtn as HTMLButtonElement).type = 'button';
+                playBtn.classList.add('lty-playbtn');
+                this.append(playBtn);
+            }
+            if (playBtn && !playBtn.textContent) {
+                const playBtnLabelEl = document.createElement('span');
+                playBtnLabelEl.className = 'lyt-visually-hidden';
+                playBtnLabelEl.textContent = 'Play Video';
+                playBtn.append(playBtnLabelEl);
+            }
+            
+            this.addEventListener('click', this.addIframe);
+        }
+        
+        addIframe() {
+            if (this.classList.contains('lyt-activated')) return;
+            this.classList.add('lyt-activated');
+            
+            const iframeEl = document.createElement('iframe');
+            iframeEl.style.width = '100%';
+            iframeEl.style.height = '100%';
+            iframeEl.title = this.title || 'YouTube video';
+            iframeEl.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframeEl.allowFullscreen = true;
+            iframeEl.src = `https://www.youtube.com/embed/${this.videoId!}?autoplay=1&rel=0&controls=1`;
+            this.appendChild(iframeEl);
+        }
+    }
+
+    customElements.define('lite-youtube', LiteYTEmbed);
 </script>
