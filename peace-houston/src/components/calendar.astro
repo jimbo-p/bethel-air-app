@@ -23,16 +23,22 @@
   /* Main hero section with background image */
   .calendar-hero {
     position: relative;
-    width: 100%;
+    max-width: 1280px; /* Example: Set a max-width (e.g., screen-xl). Adjust as needed. */
+    margin-left: auto; /* Center the div horizontally */
+    margin-right: auto; /* Center the div horizontally */
     min-height: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0;
-    background: url('../assets/Female_Friends_Meeting_In_Cafe_original_4647221.png') center center no-repeat;
+    background: url('../assets/coffee_chat_andrew_edit.png') center center no-repeat;
     background-size: cover;
     isolation: isolate;
+    /* Optional: Add border-radius if you want rounded corners */
+    border-radius: 1rem;
+    /* Optional: Add overflow hidden if content might exceed rounded corners */
+    overflow: hidden;
   }
 
   /* Dark overlay */
