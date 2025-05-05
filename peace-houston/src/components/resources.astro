@@ -5,22 +5,32 @@ import libraryShelvesImage from '../assets/library_shelves.png';
 
 const resources = [
     {
-        videoId: '1d-BvSCKJ54',
+        videoId: 'BqjtDh_IJ8o',
         title: 'Getting Unstuck Ep. 282 FEAT. Jamie Windship',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: "Today, we're talking about how to get unstuck, why pain is good, and living from our true identity versus this current cultural obsession with radical individualism, finding yourself inside yourself, speaking 'your truth,' and the like. So buckle up and get ready.",
         isVideo: true
     },
     {
         image: libraryShelvesImage,
-        title: 'Living Fearless by Jaime Windship',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        isVideo: false
+        title: 'Live No Lies by John Mark Comer',
+        description: [
+            'The bestselling author of The Ruthless Elimination of Hurry equips readers to recognize and resist the lies that seek to rob them of peace and freedom.',
+            '',
+            'Get it on Amazon or pick one up for free at Bethel Church.'
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Live-No-Lies-Recognize-Sabotage/dp/0525653120'
     },
     {
         image: bookOpenImage,
-        title: 'Live No Lies by John Mark Comer',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        isVideo: false
+        title: "Anxiety: Knowing God's Peace by Paul Tautges",
+        description: [
+            "If you are ready to dive into a 31-day study of anxiety and how to fight it, this is an excellent resource. It will teach you what anxiety is, how to trust in the creator, and exactly how to fight against your anxious feelings. After the daily devotion you will be prompted to reflect on what you've learned and to take specific action. This devotional is designed to help you change.",
+            '',
+            'Get it on Amazon or pick one up for free at Bethel Church.'
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Anxiety-Knowing-Peace-31-Day-Devotionals/dp/1629956228'
     },
 ];
 ---
@@ -47,13 +57,13 @@ const resources = [
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {resources.map((resource) => (
-                <div class="card rounded-2xl overflow-hidden shadow-xl">
+                <div class="card relative rounded-2xl overflow-hidden shadow-xl">
                     <div class="h-[246px] relative">
                         {resource.isVideo ? (
                             <div class="w-full h-full">
                                 <lite-youtube 
                                     videoid={resource.videoId} 
-                                    style="background-image: url('https://i.ytimg.com/vi/1d-BvSCKJ54/maxresdefault.jpg');"
+                                    style={`background-image: url('https://i.ytimg.com/vi/${resource.videoId}/maxresdefault.jpg');`}
                                     class="w-full h-full"
                                 >
                                     <button type="button" class="lty-playbtn">
@@ -63,7 +73,7 @@ const resources = [
                             </div>
                         ) : (
                             <Image 
-                                src={resource.image} 
+                                src={resource.image!}
                                 alt={resource.title}
                                 width={384}
                                 height={246}
@@ -73,7 +83,12 @@ const resources = [
                     </div>
                     <div class="card-body bg-[#00CFB7] bg-gradient-to-r from-[rgba(193,222,233,0.57)] to-[rgba(41,100,196,0.57)] text-white p-6">
                         <h2 class="text-xl font-semibold mb-2">{resource.title}</h2>
-                        <p class="text-base mb-6">{resource.description}</p>
+                        <p class="text-base mb-6">
+                            {Array.isArray(resource.description)
+                                ? <Fragment set:html={resource.description.join('<br />')} />
+                                : resource.description
+                            }
+                        </p>
                         <div class="flex justify-end">
                             {resource.isVideo ? (
                                 <div class="w-16 h-16 flex items-center justify-center">
@@ -90,6 +105,16 @@ const resources = [
                             )}
                         </div>
                     </div>
+
+                    {resource.url && !resource.isVideo && (
+                        <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="absolute inset-0 z-10"
+                            aria-label={resource.title}
+                        ></a>
+                    )}
                 </div>
             ))}
         </div>
@@ -190,28 +215,28 @@ const resources = [
 </style>
 
 <script>
-    // Lite YouTube Embed implementation (Updated with preconnect and dynamic elements)
+    // Lite YouTube Embed implementation
     class LiteYTEmbed extends HTMLElement {
+        videoId!: string | null;
+
         connectedCallback() {
             this.videoId = this.getAttribute('videoid');
             
             let playBtn = this.querySelector('.lty-playbtn');
-            // A label for screen readers
             if (!playBtn) {
                 playBtn = document.createElement('button');
-                playBtn.type = 'button';
+                (playBtn as HTMLButtonElement).type = 'button';
                 playBtn.classList.add('lty-playbtn');
                 this.append(playBtn);
             }
-            if (!playBtn.textContent) {
+            if (playBtn && !playBtn.textContent) {
                 const playBtnLabelEl = document.createElement('span');
                 playBtnLabelEl.className = 'lyt-visually-hidden';
-                playBtnLabelEl.textContent = this.playLabel || 'Play';
+                playBtnLabelEl.textContent = 'Play Video';
                 playBtn.append(playBtnLabelEl);
             }
             
-            // On click, create the iframe
-            this.addEventListener('click', this.addIframe.bind(this));
+            this.addEventListener('click', this.addIframe);
         }
         
         addIframe() {
@@ -224,11 +249,10 @@ const resources = [
             iframeEl.title = this.title || 'YouTube video';
             iframeEl.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
             iframeEl.allowFullscreen = true;
-            iframeEl.src = `https://www.youtube.com/embed/${this.videoId}?autoplay=1&rel=0&controls=1`;
+            iframeEl.src = `https://www.youtube.com/embed/${this.videoId!}?autoplay=1&rel=0&controls=1`;
             this.appendChild(iframeEl);
         }
     }
 
-    // Register custom element
     customElements.define('lite-youtube', LiteYTEmbed);
 </script>
