@@ -43,7 +43,7 @@ jobs:
         run: |
           if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
             echo "s3_bucket=bethel-air" >> $GITHUB_ENV
-            echo "cloudfront_distribution_id=PROD_CLOUDFRONT_DISTRIBUTION_ID" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=EP8MU2YZ8E5VL" >> $GITHUB_ENV
           elif [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
             echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
             echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
