@@ -1,0 +1,273 @@
+---
+import { Image } from 'astro:assets';
+import bookOpenImage from '../assets/book_open_pages.png';
+import libraryShelvesImage from '../assets/library_shelves.png';
+import CoffeeModal from './coffeeModal.astro';
+
+const resources = [
+    {
+        videoId: 'BqjtDh_IJ8o',
+        title: 'Getting Unstuck Ep. 282 FEAT. Jamie Windship',
+        description: "Today, we're talking about how to get unstuck, why pain is good, and living from our true identity versus this current cultural obsession with radical individualism, finding yourself inside yourself, speaking 'your truth,' and the like. So buckle up and get ready.",
+        isVideo: true
+    },
+    {
+        image: libraryShelvesImage,
+        title: 'Live No Lies by John Mark Comer',
+        description: [
+            'The bestselling author of The Ruthless Elimination of Hurry equips readers to recognize and resist the lies that seek to rob them of peace and freedom.',
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Live-No-Lies-Recognize-Sabotage/dp/0525653120'
+    },
+    {
+        image: bookOpenImage,
+        title: "Anxiety: Knowing God's Peace by Paul Tautges",
+        description: [
+            "This 31-day devotional offers a path to understanding and overcoming anxiety. Learn to trust in the Creator and take daily, actionable steps towards peace and lasting change.",
+        ],
+        isVideo: false,
+        url: 'https://www.amazon.com/Anxiety-Knowing-Peace-31-Day-Devotionals/dp/1629956228'
+    },
+];
+---
+
+<section id="resources" class="relative py-12">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="peace-chat-container mb-8">
+            <div class="peace-chat-avatar-placeholder">
+                PH
+            </div>
+            <div class="peace-chat-content">
+                <div class="peace-chat-header">
+                    <span>PeaceHouston</span>
+                    <time>12:45</time>
+                </div>
+                <div class="peace-chat-bubble peace-chat-bubble-start font-semibold">
+                    Not feeling the coffee shop? Peace is still possible, explore below.
+                </div>
+                <div class="peace-chat-footer">
+                    Delivered
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {resources.map((resource) => (
+                <div class="card relative rounded-2xl overflow-hidden shadow-xl">
+                    <div class="h-[246px] relative">
+                        {resource.isVideo ? (
+                            <div class="w-full h-full">
+                                <lite-youtube 
+                                    videoid={resource.videoId} 
+                                    style={`background-image: url('https://i.ytimg.com/vi/${resource.videoId}/maxresdefault.jpg');`}
+                                    class="w-full h-full"
+                                >
+                                    <button type="button" class="lty-playbtn">
+                                        <span class="lyt-visually-hidden">Play Video</span>
+                                    </button>
+                                </lite-youtube>
+                            </div>
+                        ) : (
+                            <Image 
+                                src={resource.image!}
+                                alt={resource.title}
+                                width={384}
+                                height={246}
+                                class="object-cover w-full h-full"
+                            />
+                        )}
+                    </div>
+                    <div class="card-body bg-[#00CFB7] bg-gradient-to-r from-[rgba(193,222,233,0.57)] to-[rgba(41,100,196,0.57)] text-white p-6">
+                        <h2 class="text-xl font-semibold mb-2">{resource.title}</h2>
+                        <p class="text-base mb-6">
+                            {Array.isArray(resource.description)
+                                ? <Fragment set:html={resource.description.join('<br />')} />
+                                : resource.description
+                            }
+                        </p>
+                        <div class="flex justify-end items-center space-x-2">
+                            {resource.isVideo ? (
+                                <div class="w-12 h-12 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-white" viewBox="0 0 50 50">
+                                        <path fill="currentColor" d="M 44.898438 14.5 C 44.5 12.300781 42.601563 10.699219 40.398438 10.199219 C 37.101563 9.5 31 9 24.398438 9 C 17.800781 9 11.601563 9.5 8.300781 10.199219 C 6.101563 10.699219 4.199219 12.199219 3.800781 14.5 C 3.398438 17 3 20.5 3 25 C 3 29.5 3.398438 33 3.898438 35.5 C 4.300781 37.699219 6.199219 39.300781 8.398438 39.800781 C 11.898438 40.5 17.898438 41 24.5 41 C 31.101563 41 37.101563 40.5 40.601563 39.800781 C 42.800781 39.300781 44.699219 37.800781 45.101563 35.5 C 45.5 33 46 29.398438 46.101563 25 C 45.898438 20.5 45.398438 17 44.898438 14.5 Z M 19 32 L 19 18 L 31.199219 25 Z"></path>
+                                    </svg>
+                                </div>
+                            ) : (
+                                <>
+                                    {resource.url && (
+                                        <a href={resource.url} target="_blank" rel="noopener noreferrer" aria-label={`View ${resource.title} on Amazon`} class="w-12 h-12 flex items-center justify-center z-20">
+                                            <svg class="h-10 w-10 text-white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="0" fill="none" width="20" height="20"/>
+                                                <g>
+                                                <style>.st0{fill-rule:evenodd;clip-rule:evenodd;fill:currentColor;}</style>
+                                                <path class="st0" d="M16.2 14.9c-1.9.8-4 1.2-6.1 1.2-2.8 0-5.5-.7-7.9-2.1-.2-.1-.3.1-.2.2 2.2 2 5 3 7.9 3 2.3 0 4.6-.7 6.5-2 .4-.1.1-.5-.2-.3zm1.8-1c-.9-.4-2-.3-2.8.3-.2.1-.1.3 0 .2.6-.1 1.8-.2 2 .1.2.3-.2 1.5-.5 2-.1.2.1.2.2.1.8-.7 1.2-1.7 1.1-2.7zm-9-1.3c1.1.1 2.2-.4 2.9-1.3.3.4.6.8 1 1.2.1.1.3.1.4 0 .3-.3 1-.9 1.3-1.2.1-.1.1-.3 0-.5-.4-.4-.6-1-.7-1.6V6.5c0-1.1.1-2.2-.8-3-.7-.6-1.7-.9-2.6-.9-1.6.1-3.5.7-3.8 2.7 0 .2.1.3.3.3l1.7.2c.2 0 .3-.2.3-.3.1-.7.7-1.1 1.4-1 .4 0 .7.2 1 .5.2.4.3.8.2 1.3v.2c-1.1 0-2.2.2-3.3.6-1.2.4-2 1.5-1.9 2.8v.4c0 1.3 1.2 2.4 2.6 2.3zm2.5-4.8v.4c.1.6 0 1.3-.3 1.8-.2.5-.7.8-1.2.8-.7 0-1.1-.5-1.1-1.3 0-1.4 1.3-1.7 2.6-1.7z"/>
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    )}
+                                    <button type="button" id="coffeeButton" aria-label="Coffee cup" class="w-12 h-12 flex items-center justify-center z-20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 512 512">
+                                           <style type="text/css">.st0{fill:currentColor;}</style>
+                                           <g>
+                                                <path class="st0" d="M129.18,417.603c0,19.313,15.649,34.962,34.962,34.962H474.99c19.304,0,34.963-15.649,34.963-34.962v-27.946 H129.18V417.603z"/>
+                                                <path class="st0" d="M479.949,59.435H143.092h-11.855c-5.2,0-12.247,0-22.184,0C48.825,59.435,0,108.26,0,168.489 c0,60.228,48.925,105.641,109.054,109.064c11.634,0.662,21.792-0.542,30.686-3.192c10.229,31.871,29.19,59.826,54.286,80.807 h255.186C487.568,323.094,512,274.932,512,221.018V91.487C512,73.78,497.646,59.435,479.949,59.435z M131.238,208.791 c-6.616,3.654-14.094,5.912-22.184,5.912c-25.518,0-46.206-20.688-46.206-46.215c0-25.516,20.688-46.205,46.206-46.205 c8.09,0,15.568,2.258,22.184,5.902V208.791z"/>
+                                           </g>
+                                        </svg>
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+    <CoffeeModal />
+</section>
+
+<style>
+    /* Import Inter font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Lite YouTube Embed styles */
+    lite-youtube {
+        background-color: #000;
+        position: relative;
+        display: block;
+        contain: content;
+        background-position: center center;
+        background-size: cover;
+        cursor: pointer;
+        max-width: 100%;
+    }
+
+    lite-youtube::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+        background-position: top;
+        background-repeat: repeat-x;
+        height: 60px;
+        padding-bottom: 50px;
+        width: 100%;
+        transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+        z-index: 1;
+    }
+
+    lite-youtube .lty-playbtn {
+        width: 68px;
+        height: 48px;
+        position: absolute;
+        cursor: pointer;
+        transform: translate3d(-50%, -50%, 0);
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        background-color: transparent;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24 27 14v20" fill="white"/></svg>');
+        filter: grayscale(100%);
+        transition: filter .1s cubic-bezier(0, 0, 0.2, 1);
+        border: none;
+        padding: 0;
+    }
+
+    lite-youtube:hover .lty-playbtn,
+    lite-youtube .lty-playbtn:focus {
+        filter: none;
+    }
+
+    lite-youtube.lyt-activated {
+        cursor: unset;
+    }
+
+    lite-youtube.lyt-activated::before,
+    lite-youtube.lyt-activated .lty-playbtn {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    lite-youtube iframe {
+        border: 0;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+
+    .lyt-visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+</style>
+
+<script>
+    // Lite YouTube Embed implementation
+    class LiteYTEmbed extends HTMLElement {
+        videoId!: string | null;
+
+        connectedCallback() {
+            this.videoId = this.getAttribute('videoid');
+            
+            let playBtn = this.querySelector('.lty-playbtn');
+            if (!playBtn) {
+                playBtn = document.createElement('button');
+                (playBtn as HTMLButtonElement).type = 'button';
+                playBtn.classList.add('lty-playbtn');
+                this.append(playBtn);
+            }
+            if (playBtn && !playBtn.textContent) {
+                const playBtnLabelEl = document.createElement('span');
+                playBtnLabelEl.className = 'lyt-visually-hidden';
+                playBtnLabelEl.textContent = 'Play Video';
+                playBtn.append(playBtnLabelEl);
+            }
+            
+            this.addEventListener('click', this.addIframe);
+        }
+        
+        addIframe() {
+            if (this.classList.contains('lyt-activated')) return;
+            this.classList.add('lyt-activated');
+            
+            const iframeEl = document.createElement('iframe');
+            iframeEl.style.width = '100%';
+            iframeEl.style.height = '100%';
+            iframeEl.title = this.title || 'YouTube video';
+            iframeEl.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframeEl.allowFullscreen = true;
+            iframeEl.src = `https://www.youtube.com/embed/${this.videoId!}?autoplay=1&rel=0&controls=1`;
+            this.appendChild(iframeEl);
+        }
+    }
+
+    customElements.define('lite-youtube', LiteYTEmbed);
+
+    // Coffee Modal Trigger
+    const coffeeButton = document.getElementById('coffeeButton');
+    if (coffeeButton) {
+        coffeeButton.addEventListener('click', () => {
+            if (typeof (window as any).openCoffeeModal === 'function') {
+                (window as any).openCoffeeModal();
+            }
+        });
+    }
+</script>

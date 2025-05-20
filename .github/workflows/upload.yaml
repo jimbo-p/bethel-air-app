@@ -1,0 +1,66 @@
+name: "Update S3 Bucket content and Invalidate CloudFront Cache"
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:  
+
+jobs:
+  deploy-static-site:
+    name: Deploy Static Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 
+          cache: "npm"      
+          cache-dependency-path: ./peace-houston/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./peace-houston
+        run: npm install
+
+      - name: Build Static Site
+        working-directory: ./peace-houston
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Determine Environment
+        id: set-env
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "s3_bucket=bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=EP8MU2YZ8E5VL" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
+            echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
+          else
+            echo "Unsupported branch: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
+
+      - name: Upload Files to S3
+        run: |
+          aws s3 sync ./peace-houston/dist/ s3://${{ env.s3_bucket }}/ \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".LICENSE"
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.cloudfront_distribution_id }} \
+            --paths "/*"

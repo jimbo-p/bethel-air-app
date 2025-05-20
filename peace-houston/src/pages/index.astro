@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/header.astro';
+import Welcome from '../components/welcome.astro';
+import Calendar from '../components/calendar.astro';
+import Resources from '../components/resources.astro';
+import Blog from '../components/blog.astro';
+import About from '../components/about.astro';
+import Footer from '../components/footer.astro';
+---
+
+<Layout title="Peace Houston">
+	<Header />
+	<main>
+		<article>
+			<Welcome />
+			<Calendar />
+			<Resources />
+			<Blog />
+			<About />
+		</article>
+	</main>
+	<Footer slot="footer" />
+</Layout>

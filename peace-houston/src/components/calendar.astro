@@ -1,0 +1,140 @@
+---
+// coffeeChatImage is no longer used.
+import coffeeChatImageLeft from '../assets/coffee_chat_left.png';
+import coffeeChatImageRight from '../assets/coffee_chat_right.png';
+---
+<section id="calendar" class="relative w-full max-w-screen-2xl mx-auto py-8"> {/* Added some padding for overall section spacing */}
+  
+  <div class="calendar-layout">
+    <div class="side-image-container">
+      <img 
+        src={coffeeChatImageLeft.src} 
+        alt="Decorative graphic on the left side of the calendar" 
+        class="side-image"
+      />
+    </div>
+    
+    <div class="calendly-widget-wrapper">
+      <!-- Calendly inline widget begin -->
+      <div 
+        class="calendly-inline-widget" 
+        data-url="https://calendly.com/d/cqwn-kxh-s2v?hide_gdpr_banner=1" 
+        data-resize="true">
+      </div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
+    </div>
+
+    <div class="side-image-container">
+      <img 
+        src={coffeeChatImageRight.src} 
+        alt="Decorative graphic on the right side of the calendar" 
+        class="side-image"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Import Inter font */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+  .calendar-layout {
+    display: flex;
+    justify-content: center; /* Changed from space-between */
+    align-items: stretch; /* Changed from flex-start */
+    /* gap: 2rem; */ /* Removed gap */
+    height: 750px; /* Added fixed height */
+    overflow: hidden; /* Added to crop anything taller */
+    padding: 0 1rem; /* Horizontal padding for the layout container */
+  }
+
+  .side-image-container {
+    flex-shrink: 0; /* Prevent image containers from shrinking */
+    /* width: 300px; */ /* Removed fixed width */
+    flex-grow: 1; /* Added to allow expansion */
+    flex-basis: 200px; /* Added base width, will grow from here */
+  }
+
+  /* Added styles for rounded corners on specific containers */
+  .calendar-layout > .side-image-container:first-child {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    overflow: hidden; /* Ensures the image inside is clipped to the rounded corners */
+  }
+
+  .calendar-layout > .side-image-container:last-child {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    overflow: hidden; /* Ensures the image inside is clipped to the rounded corners */
+  }
+
+  .side-image {
+    display: block; /* Removes extra space below image */
+    height: 100%; /* Added to fill stretched container height */
+    width: 100%; /* Changed from auto to fill container width */
+    object-fit: cover; /* Added to ensure proper image scaling */
+    object-position: top; /* This should prioritize the top of the image */
+    /* max-height: 700px; */ /* Removed max-height */
+  }
+
+  /* Wrapper for the Calendly widget */
+  .calendly-widget-wrapper {
+    flex-grow: 1; /* Allows the widget to take available space in the middle */
+    max-width: 600px; /* Maximum width for the Calendly widget area */
+    /* margin: 0 auto; */ /* Removed margin */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Calendly inline widget specific styles */
+  .calendly-inline-widget {
+    width: 100%;
+    min-height: 680px; /* Adjusted for typical Calendly UI, can be fine-tuned */
+    background: transparent !important; /* Ensures page background shows through */
+    border: none; /* No border for the widget iframe */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) { /* Tablet and smaller */
+    .calendar-layout {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem; /* Adjust gap for stacked layout */
+    }
+    .side-image-container {
+      width: 80%; 
+      max-width: 300px; /* Max width for images on smaller screens */
+      order: 1; /* Place images after the Calendly widget */
+    }
+    .side-image {
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      max-height: 250px; /* Adjust max height for mobile view */
+    }
+    .calendly-widget-wrapper {
+      width: 90%; 
+      order: 0; /* Place Calendly widget first */
+      margin-top: 1rem; 
+      margin-bottom: 1rem;
+    }
+     .calendly-inline-widget {
+      min-height: 550px; /* Adjust widget height for smaller screens */
+    }
+  }
+
+  @media (max-width: 768px) { /* Mobile */
+    .side-image-container {
+      display: none; /* Hide side images on very small screens */
+    }
+    .calendly-widget-wrapper {
+      width: 100%; 
+      /* If section has py-8 (padding y), ensure x-padding is consistent or handled here */
+      /* padding: 0 1rem; /* Adds horizontal padding inside the wrapper if needed */
+    }
+    .calendar-layout {
+        padding: 0; /* Remove layout padding if side images are gone and wrapper handles its own */
+    }
+  }
+</style>
+

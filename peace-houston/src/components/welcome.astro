@@ -1,0 +1,50 @@
+---
+import background from '../assets/background.svg';
+---
+
+<section id="welcome" class="relative w-full">
+	<div class="bg-hero-gradient flex flex-col items-center pt-[100px] pb-[55px] px-4 min-h-[600px]">
+		<div class="max-w-screen-2xl w-full flex flex-col md:flex-row justify-between items-center gap-8 md:gap-[40px] px-4">
+			<!-- Hero Content (Left side) -->
+			<div class="flex flex-col justify-center items-center pb-5 w-full md:w-[40%] md:max-w-[500px] mt-6">
+				<!-- Heading -->
+				<h1 class="font-['Inter'] font-bold text-4xl md:text-5xl leading-tight text-center text-[#1D777F] mb-6">
+					Take your first step towards a life of peace.
+					<br><br>
+				</h1>
+				
+				
+				<!-- Paragraph 
+				<div class="w-full">
+					<p class="font-['Inter'] font-semibold text-lg leading-6 text-center text-[#1E4982] mb-6 max-w-[480px] mx-auto">
+						Take your first step towards a life of peace.
+					</p>
+				</div>
+				-->
+				<!-- Button -->
+				<a href="#calendar" class="flex flex-row justify-center items-center px-[42px] w-full max-w-[400px] h-12 bg-[#0d6efd] rounded-[55px] shadow-sm">
+					<span class="font-['Inter'] font-semibold text-lg leading-[18px] text-center text-white">
+						Schedule A Meeting
+					</span>
+				</a>
+			</div>
+			
+			<!-- Video Section (Right side) - Made larger -->
+			<div class="w-full md:w-[60%] md:max-w-[800px] aspect-video rounded-[9px] overflow-hidden">
+				<iframe 
+					src="https://www.youtube.com/embed/tjQwe3K3aW0?si=Do25mGisVDos0atW&autoplay=0&mute=0"
+					class="w-full h-full rounded-[9px]"
+					frameborder="0" 
+					allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* You can remove this if you already load Inter font elsewhere in your project */
+	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap');
+</style>
