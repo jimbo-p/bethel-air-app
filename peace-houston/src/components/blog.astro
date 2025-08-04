@@ -42,7 +42,7 @@ const accordionItems = [
           </div>
       </div>
 
-      <div class="space-y-2 accordion-container">
+      <div class="space-y-4 accordion-container">
           {accordionItems.map((item, index) => (
               <div class="collapse collapse-arrow join-item border-base-300 border accordion-item">
                    <input type="checkbox" name="thought-accordion" />
@@ -82,6 +82,11 @@ const accordionItems = [
         background: linear-gradient(90deg, color(display-p3 0.780 0.867 0.910 / 0.51) 0%, color(display-p3 0.224 0.388 0.741 / 0.51) 100%), color(display-p3 0.298 0.686 0.314);
         background: linear-gradient(90deg, rgba(193, 222, 233, 0.51) 0%, rgba(41, 100, 196, 0.51) 100%), #4CAF50; /* Fallback */
         padding: 1px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .accordion-item:hover {
+        transform: scale(1.015);
     }
 
      .accordion-item .collapse-title,
