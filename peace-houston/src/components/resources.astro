@@ -106,7 +106,7 @@ const resources = [
                                             </svg>
                                         </a>
                                     )}
-                                    <button type="button" id="coffeeButton" aria-label="Coffee cup" class="w-12 h-12 flex items-center justify-center z-20">
+                                    <button type="button" aria-label="Coffee cup" class="coffeeButton w-12 h-12 flex items-center justify-center z-20">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 512 512">
                                            <style type="text/css">.st0{fill:currentColor;}</style>
                                            <g>
@@ -262,12 +262,12 @@ const resources = [
     customElements.define('lite-youtube', LiteYTEmbed);
 
     // Coffee Modal Trigger
-    const coffeeButton = document.getElementById('coffeeButton');
-    if (coffeeButton) {
-        coffeeButton.addEventListener('click', () => {
+    const coffeeButtons = document.querySelectorAll('.coffeeButton');
+    coffeeButtons.forEach(button => {
+        button.addEventListener('click', () => {
             if (typeof (window as any).openCoffeeModal === 'function') {
                 (window as any).openCoffeeModal();
             }
         });
-    }
+    });
 </script>
