@@ -31,8 +31,8 @@ jobs:
         working-directory: ./peace-houston
         run: npm run build
         env:
-          PUBLIC_BLOG_MANIFEST_URL: ${{ secrets.PUBLIC_BLOG_MANIFEST_URL }}
-          PUBLIC_BLOG_BASE_URL: ${{ secrets.PUBLIC_BLOG_BASE_URL }}
+          PUBLIC_BLOG_MANIFEST_URL: ${{ vars.PUBLIC_BLOG_MANIFEST_URL }}
+          PUBLIC_BLOG_BASE_URL: ${{ vars.PUBLIC_BLOG_BASE_URL }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
