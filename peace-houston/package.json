@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.0",
-    "astro": "^4.16.18"
+    "astro": "^4.16.18",
+    "markdown-it": "^14.1.0",
+    "marked": "^16.1.2"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.23",
     "postcss": "^8.4.32",
