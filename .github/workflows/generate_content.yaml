@@ -46,9 +46,11 @@ jobs:
           echo "blog_slug=$(echo "$output" | grep "BLOG_SLUG=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
           echo "blog_tags=$(echo "$output" | grep "BLOG_TAGS=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
           
-          # Full content is fine for 1200 words
+          # Extract multiline blog content
+          blog_content=$(echo "$output" | awk '/BLOG_CONTENT=/,/BLOG_SLUG=/' | sed '$d' | sed '1s/BLOG_CONTENT=//')
+          
           echo "blog_content<<EOF" >> $GITHUB_OUTPUT
-          echo "$output" | grep "BLOG_CONTENT=" | cut -d'=' -f2- >> $GITHUB_OUTPUT
+          echo "$blog_content" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
