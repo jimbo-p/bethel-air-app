@@ -42,6 +42,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Sync Blog Source Files to S3
+        if: github.ref_name == 'main'
+        run: |
+          aws s3 sync ./local_blogs/ s3://bethel-air-blogs/blogs/ --delete
+
       - name: Determine Environment
         id: set-env
         run: |

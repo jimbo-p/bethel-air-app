@@ -7,6 +7,9 @@ on:
 jobs:
   generate-content:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
     permissions:
       contents: write
       pull-requests: write
@@ -37,7 +40,7 @@ jobs:
       - name: Generate Blog Content
         id: generate
         run: |
-          output=$(python scripts/generate_blog.py --local-output-only)
+          output=$(python scripts/generate_blog.py --local)
           echo "$output"
           
           # Extract all blog details

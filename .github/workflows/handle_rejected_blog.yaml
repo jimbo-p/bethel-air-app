@@ -46,7 +46,7 @@ jobs:
           echo "Previous blog PR was rejected: ${{ github.event.pull_request.title }}"
           echo "Generating new blog content..."
           
-          output=$(python scripts/generate_blog.py --local-output-only)
+          output=$(python scripts/generate_blog.py --local)
           echo "$output"
           
           # Extract blog details for new PR
@@ -55,6 +55,7 @@ jobs:
           echo "blog_slug=$(echo "$output" | grep "BLOG_SLUG=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
           echo "blog_tags=$(echo "$output" | grep "BLOG_TAGS=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
           
+          # Extract multiline blog content
           blog_content=$(echo "$output" | awk '/BLOG_CONTENT=/,/BLOG_SLUG=/' | sed '$d' | sed '1s/BLOG_CONTENT=//')
           
           echo "blog_content<<EOF" >> $GITHUB_OUTPUT
