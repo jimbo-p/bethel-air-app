@@ -26,6 +26,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Create local_blogs directory
+        run: |
+          mkdir -p local_blogs/posts
+          mkdir -p local_blogs/images
+
       - name: Generate Blog Content
         id: generate
         run: |
