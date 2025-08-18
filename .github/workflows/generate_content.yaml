@@ -46,6 +46,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "🤖 Add new AI-generated blog post: ${{ steps.generate.outputs.blog_title }}"
+          branch: blog/auto-generated-${{ steps.generate.outputs.blog_slug }}
+          delete-branch: true
           title: "🤖 New Blog: ${{ steps.generate.outputs.blog_title }}"
           body: |
             ## 🤖 AI-Generated Blog Post
@@ -63,3 +67,5 @@ jobs:
             - 📋 Updated: `local_blogs/index.json`
             
             **Review and merge when ready! 🚀**
+            
+            This PR was automatically created by the weekly content generation workflow.
