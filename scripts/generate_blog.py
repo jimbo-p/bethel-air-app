@@ -17,6 +17,8 @@ from typing import Dict, List, Optional
 from dataclasses import dataclass
 import re
 import os
+from botocore.exceptions import ClientError
+from botocore.config import Config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -37,11 +39,19 @@ class BlogPost:
 class BlogGenerator:
     """Handles blog generation using existing examples and AWS Bedrock."""
     
-    def __init__(self, bucket_name: str = "bethel-air-blogs", local_mode: bool = False):
+    def __init__(self, bucket_name: str = "bethel-air-blogs", local_mode: bool = False, local_output_only: bool = False):
         self.bucket_name = bucket_name
-        self.local_mode = local_mode
-        self.s3_client = boto3.client('s3') if not local_mode else None
-        self.bedrock_client = boto3.client('bedrock-runtime')
+        self.local_mode = local_mode  # Full local mode (read and write locally)
+        self.local_output_only = local_output_only  # Read from S3, write locally
+        self.s3_client = boto3.client('s3') if not (local_mode and not local_output_only) else None
+        
+        # Configure Bedrock client with 10-minute timeout
+        bedrock_config = Config(
+            read_timeout=600,  # 10 minutes in seconds
+            connect_timeout=60,  # 1 minute for connection
+            retries={'max_attempts': 3}  # Retry up to 3 times
+        )
+        self.bedrock_client = boto3.client('bedrock-runtime', config=bedrock_config)
         self.existing_blogs: Dict[str, BlogPost] = {}
         
         # Create local directories if in local mode
@@ -50,8 +60,9 @@ class BlogGenerator:
             os.makedirs('local_blogs/images', exist_ok=True)
         
     def fetch_blog_index(self) -> Dict:
-        """Fetch the current blog index from S3 or local file."""
-        if self.local_mode:
+        """Fetch the blog index from S3 or local filesystem."""
+        if self.local_mode and not self.local_output_only:
+            # Full local mode - read from local
             index_path = 'local_blogs/index.json'
             try:
                 if os.path.exists(index_path):
@@ -66,6 +77,7 @@ class BlogGenerator:
                 logger.error(f"Error fetching local blog index: {e}")
                 return {"updated": datetime.now(timezone.utc).isoformat(), "posts": []}
         else:
+            # Read from S3 (either normal mode or local_output_only mode)
             try:
                 response = self.s3_client.get_object(
                     Bucket=self.bucket_name,
@@ -80,7 +92,8 @@ class BlogGenerator:
     
     def fetch_blog_content(self, blog_path: str) -> Optional[str]:
         """Fetch the markdown content of a specific blog post."""
-        if self.local_mode:
+        if self.local_mode and not self.local_output_only:
+            # Full local mode - read from local
             local_path = f"local_blogs/{blog_path.replace('blogs/', '')}"
             try:
                 if os.path.exists(local_path):
@@ -95,6 +108,7 @@ class BlogGenerator:
                 logger.error(f"Error fetching local blog content from {local_path}: {e}")
                 return None
         else:
+            # Read from S3 (either normal mode or local_output_only mode)
             try:
                 response = self.s3_client.get_object(
                     Bucket=self.bucket_name,
@@ -177,18 +191,91 @@ class BlogGenerator:
         
         # Build the complete prompt with examples
         full_prompt = self.build_full_prompt(base_prompt, examples)
-        
-        # TODO: Implement actual Bedrock call with full_prompt
-        # For now, return a placeholder that will be replaced with actual implementation
         logger.info(f"Generated prompt with {len(examples)} examples")
-        logger.debug(f"Full prompt length: {len(full_prompt)} characters")
         
-        return {
-            "title": "AI Generated Blog Post",
-            "content": "# AI Generated Blog Post\n\nThis is placeholder content that will be replaced with actual Bedrock-generated content.",
-            "summary": "An AI-generated blog post for the church community",
-            "tags": ["faith", "community", "ai-generated"]
-        }
+        # Set the model ID for Claude Opus 4.1 - use inference profile
+        model_id = "us.anthropic.claude-opus-4-1-20250805-v1:0"
+        
+        # Prepare the conversation for Bedrock
+        conversation = [
+            {
+                "role": "user",
+                "content": [{"text": full_prompt}],
+            }
+        ]
+        
+        try:
+            logger.info(f"Calling Bedrock with model: {model_id}")
+            
+            # Call Bedrock with Claude Opus 4.1
+            response = self.bedrock_client.converse(
+                modelId=model_id,
+                messages=conversation,
+                inferenceConfig={
+                    "maxTokens": 4000,  # Increased for longer blog posts
+                    "temperature": 0.7,  # Balanced creativity
+                    "topP": 0.9
+                }
+            )
+            
+            # Extract the response text
+            response_text = response["output"]["message"]["content"][0]["text"]
+            logger.info("Successfully received response from Bedrock")
+            
+            # Parse the JSON response
+            try:
+                # Handle case where Claude wraps JSON in markdown code blocks
+                response_text_clean = response_text.strip()
+                if response_text_clean.startswith('```json'):
+                    # Extract JSON from markdown code block
+                    start_idx = response_text_clean.find('```json') + 7
+                    end_idx = response_text_clean.rfind('```')
+                    if end_idx > start_idx:
+                        response_text_clean = response_text_clean[start_idx:end_idx].strip()
+                elif response_text_clean.startswith('```'):
+                    # Handle generic code block
+                    start_idx = response_text_clean.find('```') + 3
+                    end_idx = response_text_clean.rfind('```')
+                    if end_idx > start_idx:
+                        response_text_clean = response_text_clean[start_idx:end_idx].strip()
+                
+                blog_data = json.loads(response_text_clean)
+                
+                # Validate required fields
+                required_fields = ["title", "content", "summary", "tags"]
+                for field in required_fields:
+                    if field not in blog_data:
+                        raise ValueError(f"Missing required field '{field}' in Bedrock response")
+                
+                # Ensure tags is a list
+                if isinstance(blog_data["tags"], str):
+                    # If tags is a string, try to split it
+                    blog_data["tags"] = [tag.strip() for tag in blog_data["tags"].split(",")]
+                elif not isinstance(blog_data["tags"], list):
+                    raise ValueError(f"Tags field must be a list or comma-separated string, got: {type(blog_data['tags'])}")
+                
+                logger.info(f"Successfully parsed blog: '{blog_data['title']}'")
+                return blog_data
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse JSON response from Bedrock: {e}")
+                logger.error(f"Raw response: {response_text[:500]}...")
+                raise ValueError(f"Bedrock returned invalid JSON: {e}") from e
+                
+            except ValueError as e:
+                logger.error(f"Invalid response format from Bedrock: {e}")
+                raise ValueError(f"Bedrock response validation failed: {e}") from e
+        
+        except ClientError as e:
+            logger.error(f"AWS Bedrock ClientError: {e}")
+            error_code = e.response.get('Error', {}).get('Code', 'Unknown')
+            error_message = e.response.get('Error', {}).get('Message', str(e))
+            logger.error(f"Error Code: {error_code}, Message: {error_message}")
+            raise RuntimeError(f"Bedrock API error [{error_code}]: {error_message}") from e
+            
+        except Exception as e:
+            logger.error(f"Unexpected error calling Bedrock: {e}")
+            raise RuntimeError(f"Unexpected error during Bedrock call: {e}") from e
     
     def generate_slug(self, title: str) -> str:
         """Generate a URL-friendly slug from a title."""
@@ -201,7 +288,7 @@ class BlogGenerator:
         """Save blog content either to S3 or locally based on mode."""
         blog_path = f"blogs/posts/{slug}.md"
         
-        if self.local_mode:
+        if self.local_mode or self.local_output_only:
             local_path = f"local_blogs/posts/{slug}.md"
             try:
                 with open(local_path, 'w', encoding='utf-8') as f:
@@ -243,7 +330,7 @@ class BlogGenerator:
         index['posts'].insert(0, new_post_data)
         index['updated'] = datetime.now(timezone.utc).isoformat()
         
-        if self.local_mode:
+        if self.local_mode or self.local_output_only:
             local_path = 'local_blogs/index.json'
             try:
                 with open(local_path, 'w', encoding='utf-8') as f:
@@ -319,11 +406,15 @@ def main():
     parser.add_argument('--bucket', default='bethel-air-blogs', help='S3 bucket name')
     parser.add_argument('--prompt', help='Custom prompt file path (default: scripts/prompts/generate_blog.txt)')
     parser.add_argument('--local', action='store_true', help='Save files locally instead of uploading to S3 (for testing)')
+    parser.add_argument('--local-output-only', action='store_true', help='Read examples from S3 but save output locally')
     
     args = parser.parse_args()
     
     # Initialize generator
-    generator = BlogGenerator(bucket_name=args.bucket, local_mode=args.local)
+    if args.local_output_only:
+        generator = BlogGenerator(bucket_name=args.bucket, local_output_only=True)
+    else:
+        generator = BlogGenerator(bucket_name=args.bucket, local_mode=args.local)
     
     # Load prompt - use default or custom
     custom_prompt = None
@@ -347,6 +438,14 @@ def main():
         print(f"📝 Slug: {new_blog.slug}")
         print(f"🔗 Path: {new_blog.path}")
         print(f"💾 Storage: {storage_info}")
+        
+        if args.local_output_only:
+            # Output blog details for GitHub Actions to capture
+            print(f"BLOG_TITLE={new_blog.title}")
+            print(f"BLOG_SUMMARY={new_blog.summary}")
+            print(f"BLOG_CONTENT={new_blog.content}")
+            print(f"BLOG_SLUG={new_blog.slug}")
+            print(f"BLOG_TAGS={', '.join(new_blog.tags)}")
         
     except Exception as e:
         logger.error(f"Failed to generate blog: {e}")
