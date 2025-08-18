@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - develop
-      - main
-  workflow_dispatch:  
+      - main  # This will trigger when the PR is merged
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   deploy-static-site:
@@ -41,6 +42,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Sync Blog Source Files to S3
+        if: github.ref_name == 'main'
+        run: |
+          aws s3 sync ./local_blogs/ s3://bethel-air-blogs/blogs/ --delete
+
       - name: Determine Environment
         id: set-env
         run: |
@@ -51,8 +57,8 @@ jobs:
             echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
             echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
           else
-            echo "Unsupported branch: ${GITHUB_REF_NAME}"
-            exit 1
+            echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
           fi
 
       - name: Upload Files to S3

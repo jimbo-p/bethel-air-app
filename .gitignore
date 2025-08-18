@@ -1,3 +1,9 @@
+# virtual environment
+venv/
+
+# aws credentials
+set_aws_creds.ps1
+
 # build output
 dist/
 
