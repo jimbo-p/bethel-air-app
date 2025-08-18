@@ -1,6 +1,9 @@
 # virtual environment
 venv/
 
+# local blog output
+local_blogs/
+
 # aws credentials
 set_aws_creds.ps1
 
