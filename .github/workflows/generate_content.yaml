@@ -1,0 +1,51 @@
+name: Weekly Content Generation + Site Deploy
+on:
+  schedule:
+    # 8:00 AM America/Chicago ≈ 13:00 UTC during DST; 14:00 UTC in winter.
+    - cron: "0 13 * * MON"
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-content
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: "3.12"
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate Blog Content
+        run: |
+          python scripts/generate_blog.py
+          echo "Blog content generation completed"
+
+  deploy-site:
+    needs: generate-content
+    uses: ./.github/workflows/upload.yaml
+    secrets: inherit
