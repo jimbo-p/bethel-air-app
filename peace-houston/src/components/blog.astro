@@ -45,6 +45,19 @@ function derivePreview(markdown: string, summary?: string): string {
 	return trimmed + (words.length > 60 ? '…' : '');
 }
 
+function formatDate(dateString: string): string {
+	try {
+		const date = new Date(dateString);
+		return date.toLocaleDateString('en-US', { 
+			year: 'numeric', 
+			month: 'short', 
+			day: 'numeric' 
+		});
+	} catch {
+		return dateString;
+	}
+}
+
 async function fetchManifest(): Promise<{ posts: PostEntry[] }> {
 	const res = await fetch(manifestUrl);
 	if (!res.ok) throw new Error(`Failed to fetch manifest: ${res.status}`);
@@ -54,15 +67,33 @@ async function fetchManifest(): Promise<{ posts: PostEntry[] }> {
 async function buildItems() {
 	const { posts = [] } = await fetchManifest();
 
-	// Optional: newest first if date present
-	posts.sort((a, b) => {
+	// Find "A Message from Todd" post to pin it first
+	const toddMessagePost = posts.find(post => 
+		post.slug === 'a-message-from-todd' || 
+		post.title === 'A Message from Todd'
+	);
+
+	// Get all other posts and sort by date descending (newest first)
+	const otherPosts = posts.filter(post => 
+		post.slug !== 'a-message-from-todd' && 
+		post.title !== 'A Message from Todd'
+	);
+	
+	otherPosts.sort((a, b) => {
 		const da = a.date ? new Date(a.date).getTime() : 0;
 		const db = b.date ? new Date(b.date).getTime() : 0;
 		return db - da;
 	});
 
+	// Combine: Todd's message first, then latest 4 other posts
+	const orderedPosts = [];
+	if (toddMessagePost) {
+		orderedPosts.push(toddMessagePost);
+	}
+	orderedPosts.push(...otherPosts.slice(0, 4));
+
 	const htmlItems = await Promise.all(
-        posts.map(async (p) => {
+        orderedPosts.map(async (p) => {
             const url = p.url ?? new URL(p.path ?? '', baseUrl).toString();
             const mdText = await fetch(url).then((r) => r.text());
 
@@ -71,7 +102,9 @@ async function buildItems() {
             const title = p.title ?? deriveTitleFromFrontmatter(mdText) ?? p.slug ?? 'Untitled';
             const preview = derivePreview(mdText, p.summary);
             const html = marked.parse(strippedMd) as string;
-            return { title, preview, html };
+            const formattedDate = p.date ? formatDate(p.date) : '';
+            
+            return { title, preview, html, date: formattedDate };
         })
     );
 
@@ -80,6 +113,7 @@ async function buildItems() {
 
 const accordionItems = await buildItems();
 ---
+
 {/* Section remains unconstrained */}
 <section id="blog" class="py-8">
 	{/* Update max-width on the wrapper div */}
@@ -105,12 +139,15 @@ const accordionItems = await buildItems();
 			</div>
 		</div>
 
-		<div class="space-y-4 accordion-container">
+		<div class="space-y-6 accordion-container">
 			{accordionItems.map((item) => (
 				<div class="collapse collapse-arrow join-item border-base-300 border accordion-item">
 					<input type="checkbox" name="thought-accordion" />
 					<div class="collapse-title accordion-title">
-						<div class="accordion-title-text text-xl font-semibold">{item.title}</div>
+						<div class="accordion-title-content">
+							<div class="accordion-title-text text-xl font-semibold">{item.title}</div>
+							{item.date && <div class="accordion-date-text">{item.date}</div>}
+						</div>
 						{item.preview && <div class="accordion-preview-text">{item.preview}</div>}
 					</div>
 					<div class="collapse-content accordion-content">
@@ -193,8 +230,26 @@ const accordionItems = await buildItems();
 		justify-content: center;
 	}
 
+	.accordion-title-content {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		width: 100%;
+		margin-bottom: 4px;
+	}
+
 	.accordion-title-text {
 		line-height: 1.4;
+		flex: 1;
+	}
+
+	.accordion-date-text {
+		font-size: 14px;
+		font-weight: 400;
+		color: #B0B0B0;
+		margin-left: 16px;
+		margin-right: 32px;
+		flex-shrink: 0;
 	}
 
 	.accordion-preview-text {
