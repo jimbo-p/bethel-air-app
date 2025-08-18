@@ -12,6 +12,9 @@ jobs:
       startsWith(github.event.pull_request.head.ref, 'blog/auto-generated-')
     
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
       - name: Checkout Repository
