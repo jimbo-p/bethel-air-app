@@ -1,0 +1,71 @@
+name: Weekly Content Generation
+on:
+  schedule:
+    - cron: "0 13 * * MON"
+  workflow_dispatch:
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate Blog Content
+        id: generate
+        run: |
+          output=$(python scripts/generate_blog.py --local-output-only)
+          echo "$output"
+          
+          # Extract all blog details
+          echo "blog_title=$(echo "$output" | grep "BLOG_TITLE=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_summary=$(echo "$output" | grep "BLOG_SUMMARY=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_slug=$(echo "$output" | grep "BLOG_SLUG=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_tags=$(echo "$output" | grep "BLOG_TAGS=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          
+          # Full content is fine for 1200 words
+          echo "blog_content<<EOF" >> $GITHUB_OUTPUT
+          echo "$output" | grep "BLOG_CONTENT=" | cut -d'=' -f2- >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "🤖 Add new AI-generated blog post: ${{ steps.generate.outputs.blog_title }}"
+          branch: blog/auto-generated-${{ steps.generate.outputs.blog_slug }}
+          delete-branch: true
+          title: "🤖 New Blog: ${{ steps.generate.outputs.blog_title }}"
+          body: |
+            ## 🤖 AI-Generated Blog Post
+            
+            **Title:** ${{ steps.generate.outputs.blog_title }}
+            **Summary:** ${{ steps.generate.outputs.blog_summary }}
+            **Tags:** ${{ steps.generate.outputs.blog_tags }}
+            **Slug:** ${{ steps.generate.outputs.blog_slug }}
+            
+            ### Full Content:
+            ${{ steps.generate.outputs.blog_content }}
+            
+            ### Files Changed:
+            - 📝 New blog post: `local_blogs/posts/${{ steps.generate.outputs.blog_slug }}.md`
+            - 📋 Updated: `local_blogs/index.json`
+            
+            **Review and merge when ready! 🚀**
+            
+            This PR was automatically created by the weekly content generation workflow.

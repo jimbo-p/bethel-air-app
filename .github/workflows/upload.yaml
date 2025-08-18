@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - develop
-      - main
-  workflow_dispatch:  
+      - main  # This will trigger when the PR is merged
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   deploy-static-site:
@@ -51,8 +52,8 @@ jobs:
             echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
             echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
           else
-            echo "Unsupported branch: ${GITHUB_REF_NAME}"
-            exit 1
+            echo "s3_bucket=dev-bethel-air" >> $GITHUB_ENV
+            echo "cloudfront_distribution_id=E1IBUE44VG6VDU" >> $GITHUB_ENV
           fi
 
       - name: Upload Files to S3
