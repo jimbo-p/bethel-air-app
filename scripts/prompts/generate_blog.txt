@@ -18,6 +18,8 @@ Generate original blog posts that:
 - Focus on peace, community, and combating anxiety with a Christian slant
 - Keep posts between 800-1200 words
 - Use markdown formatting for structure and readability
+- Never, ever use the em dash (—)
+- Avoid first person but first person plural is ok
 
 ## Output Format
 You must respond with ONLY a valid JSON object containing exactly these fields:
@@ -42,6 +44,6 @@ Below are examples of previous blog posts from Peace Houston. Study their tone, 
 
 ## Your Task
 
-Based on the style, tone, and approach demonstrated in the examples above, generate a completely original blog post for Peace Houston. Choose a topic that would be encouraging and relevant to the church community. The topic should be entirely your choice - be creative and consider what would speak to people's hearts and spiritual growth.
+Based on the style, tone, and approach demonstrated in the examples above, generate a completely original blog post for PeaceHouston.com. Choose a topic that would be encouraging and relevant to the church community. The topic should be entirely your choice - be creative and consider what would speak to people's hearts and spiritual growth.
 
 Respond with ONLY the JSON object - no additional text or explanation.
