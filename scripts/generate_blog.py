@@ -288,11 +288,31 @@ class BlogGenerator:
         """Save blog content either to S3 or locally based on mode."""
         blog_path = f"blogs/posts/{slug}.md"
         
+        # Create frontmatter header
+        frontmatter = f"""---
+title: "{metadata['title']}"
+date: {metadata['date']}
+description: "{metadata.get('summary', '')}"
+---
+
+"""
+        
+        # Remove title from content if it exists as first line
+        content_lines = content.split('\n')
+        if content_lines and content_lines[0].startswith('# '):
+            # Remove the title line and any following empty lines
+            while content_lines and (content_lines[0].startswith('# ') or content_lines[0].strip() == ''):
+                content_lines.pop(0)
+            content = '\n'.join(content_lines)
+        
+        # Combine frontmatter with content
+        full_content = frontmatter + content
+        
         if self.local_mode or self.local_output_only:
             local_path = f"local_blogs/posts/{slug}.md"
             try:
                 with open(local_path, 'w', encoding='utf-8') as f:
-                    f.write(content)
+                    f.write(full_content)
                 logger.info(f"Saved blog locally to {local_path}")
                 return blog_path
             except Exception as e:
@@ -303,7 +323,7 @@ class BlogGenerator:
                 self.s3_client.put_object(
                     Bucket=self.bucket_name,
                     Key=blog_path,
-                    Body=content.encode('utf-8'),
+                    Body=full_content.encode('utf-8'),
                     ContentType='text/markdown'
                 )
                 logger.info(f"Uploaded blog to {blog_path}")
@@ -388,6 +408,7 @@ class BlogGenerator:
         blog_path = self.save_blog_content(slug, new_blog.content, {
             'title': new_blog.title,
             'date': new_blog.date,
+            'summary': new_blog.summary,
             'tags': new_blog.tags
         })
         
