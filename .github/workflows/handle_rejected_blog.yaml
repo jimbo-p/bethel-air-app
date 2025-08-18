@@ -1,0 +1,79 @@
+name: Auto-Retry Rejected Blog
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  retry-blog-generation:
+    # Only run if PR was closed without merging and is an auto-generated blog
+    if: |
+      github.event.pull_request.merged == false && 
+      startsWith(github.event.pull_request.head.ref, 'blog/auto-generated-')
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate New Blog Content
+        id: generate
+        run: |
+          echo "Previous blog PR was rejected: ${{ github.event.pull_request.title }}"
+          echo "Generating new blog content..."
+          
+          output=$(python scripts/generate_blog.py --local-output-only)
+          echo "$output"
+          
+          # Extract blog details for new PR
+          echo "blog_title=$(echo "$output" | grep "BLOG_TITLE=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_summary=$(echo "$output" | grep "BLOG_SUMMARY=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_slug=$(echo "$output" | grep "BLOG_SLUG=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          echo "blog_tags=$(echo "$output" | grep "BLOG_TAGS=" | cut -d'=' -f2-)" >> $GITHUB_OUTPUT
+          
+          echo "blog_content<<EOF" >> $GITHUB_OUTPUT
+          echo "$output" | grep "BLOG_CONTENT=" | cut -d'=' -f2- >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create New Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "🔄 New AI-generated blog post (retry): ${{ steps.generate.outputs.blog_title }}"
+          branch: blog/auto-generated-${{ steps.generate.outputs.blog_slug }}
+          delete-branch: true
+          title: "🔄 New Blog (Retry): ${{ steps.generate.outputs.blog_title }}"
+          body: |
+            ## 🔄 New AI-Generated Blog Post (Auto-Retry)
+            
+            **Previous PR was rejected:** ${{ github.event.pull_request.html_url }}
+            
+            **New Title:** ${{ steps.generate.outputs.blog_title }}
+            **Summary:** ${{ steps.generate.outputs.blog_summary }}
+            **Tags:** ${{ steps.generate.outputs.blog_tags }}
+            **Slug:** ${{ steps.generate.outputs.blog_slug }}
+            
+            ### Full Content:
+            ${{ steps.generate.outputs.blog_content }}
+            
+            ### Files Changed:
+            - 📝 New blog post: `local_blogs/posts/${{ steps.generate.outputs.blog_slug }}.md`
+            - 📋 Updated: `local_blogs/index.json`
+            
+            **This is an automatic retry after the previous blog was rejected. Review and merge when ready! 🚀** 
