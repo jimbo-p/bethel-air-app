@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - develop
-      - main
+      - main  # This will trigger when the PR is merged
   workflow_dispatch:
-  workflow_call:  # Add this to allow other workflows to call this one
+  workflow_call:
 
 jobs:
   deploy-static-site:
