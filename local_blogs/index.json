@@ -1,6 +1,20 @@
 {
-  "updated": "2025-08-18T18:57:01.050063+00:00",
+  "updated": "2025-08-18T21:26:22.264198+00:00",
   "posts": [
+    {
+      "slug": "the-quiet-revolution-of-ordinary-moments",
+      "title": "The Quiet Revolution of Ordinary Moments",
+      "date": "2025-08-18",
+      "summary": "What if peace isn't found in grand spiritual experiences but in the small, seemingly insignificant moments we often overlook?",
+      "path": "blogs/posts/the-quiet-revolution-of-ordinary-moments.md",
+      "tags": [
+        "peace",
+        "anxiety",
+        "faith",
+        "mental-health"
+      ],
+      "image": "blogs/images/the-quiet-revolution-of-ordinary-moments-hero.v1.jpg"
+    },
     {
       "slug": "the-unexpected-peace-of-unfinished-prayers",
       "title": "The Unexpected Peace of Unfinished Prayers",
