@@ -460,7 +460,7 @@ def main():
         print(f"🔗 Path: {new_blog.path}")
         print(f"💾 Storage: {storage_info}")
         
-        if args.local_output_only:
+        if args.local or args.local_output_only:
             # Output blog details for GitHub Actions to capture
             print(f"BLOG_TITLE={new_blog.title}")
             print(f"BLOG_SUMMARY={new_blog.summary}")
