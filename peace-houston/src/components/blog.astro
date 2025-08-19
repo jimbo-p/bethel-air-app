@@ -86,7 +86,7 @@ async function buildItems() {
 	});
 
 	// Combine: latest 4 other posts, with Todd's message pinned to the 5th slot
-	const orderedPosts = otherPosts.slice(0, 4);
+	const orderedPosts = otherPosts.slice(-4).reverse();
 	if (toddMessagePost) {
 		orderedPosts.push(toddMessagePost);
 	}
